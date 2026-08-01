@@ -183,27 +183,7 @@ eras:
               - { label: "Wear", value: "HIGH" }
               - { label: "Seam", value: "STITCH" }
 
-      - year: 2001
-        balls:
-          - name: "FINALE 01 MILAN"
-            stage: "Final Edition"
-            highlight: true
-            description: >
-              The birth of an icon. The debut of the 'Starball'
-              construction.
-            image: "https://placehold.co/600x600/2e2e2e/eeeeee?text=Finale+01+Milan"
-            specs:
-              - { label: "Status", value: "FIRST" }
-              - { label: "Stars", value: "SILVER" }
-          - name: "FINALE 01 ORIGINAL"
-            stage: "Debut Print"
-            description: >
-              Conservative silver and white panels marking the
-              competition's new era.
-            image: "https://placehold.co/600x600/3a3a3a/eeeeee?text=Finale+01+Original"
-            specs:
-              - { label: "Brand", value: "ADIDAS" }
-              - { label: "Icon", value: "STAR" }
+
 
   # ------------------------------------------------------------
   # Another hero-style era, at the bottom of the timeline
