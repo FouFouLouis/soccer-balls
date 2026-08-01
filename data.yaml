@@ -42,12 +42,10 @@ eras:
   # HERO ERA — layout: hero  ->  big feature layout at the top
   # ------------------------------------------------------------
   - id: modern-nike
-    title: "THE MODERN NIKE ERA (2024+)"
+    title: "Upcoming Champions League 2026-2027"
     layout: hero
     context: >
-      Starting in the 2024/25 season, UEFA announced a historic transition
-      back to Nike as the official supplier. This marks a shift toward
-      sustainable materials and flight-stabilizing groove technology.
+      We already know the design of the group stage ball.
     featured_ball:
       name: "NIKE FLIGHT CL"
       subtitle: "ESTIMATED DEBUT: 2024/25"
