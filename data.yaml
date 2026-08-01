@@ -1,0 +1,245 @@
+# ============================================================
+# CL BALL ARCHIVE — content database
+# ------------------------------------------------------------
+# Everything on the page is generated from this file.
+# - Add a year  -> a new year section appears automatically
+# - Add a ball  -> a new card appears in that year (1 to 3 per year)
+# - Add an era  -> a new era banner + its years appear
+#
+# Eras are rendered top to bottom in the order below.
+# Years are rendered in the order you list them inside each era.
+#
+# Ball fields:
+#   name:        card title
+#   stage:       shown as the badge (e.g. "Final Edition", "Group Stage",
+#                "Knockout Stage", "Practice", "Special Edition")
+#   highlight:   true -> yellow badge (defaults to false -> grey badge)
+#   description: short paragraph on the card
+#   image:       URL (external for now, relative path later, e.g. img/finale24.jpg)
+#   specs:       up to ~4 label/value pairs shown in the card footer
+# ============================================================
+
+site:
+  brand: "CL BALL ARCHIVE"
+  title_line_1: "CHAMPIONS LEAGUE"
+  title_line_2: "TIMELINE"
+  intro: >
+    A comprehensive journey through the evolution of the world's most iconic
+    match ball. All variations — from Group Stage to the Final — displayed
+    side-by-side.
+  partner_badge:
+    label: "CURRENT PARTNER"
+    value: "NIKE (INCOMING)"
+  nav:
+    - "Timeline"
+    - "Archive"
+    - "Shop"
+    - "Finals"
+    - "Technology"
+
+eras:
+  # ------------------------------------------------------------
+  # HERO ERA — layout: hero  ->  big feature layout at the top
+  # ------------------------------------------------------------
+  - id: modern-nike
+    title: "THE MODERN NIKE ERA (2024+)"
+    layout: hero
+    context: >
+      Starting in the 2024/25 season, UEFA announced a historic transition
+      back to Nike as the official supplier. This marks a shift toward
+      sustainable materials and flight-stabilizing groove technology.
+    featured_ball:
+      name: "NIKE FLIGHT CL"
+      subtitle: "ESTIMATED DEBUT: 2024/25"
+      image: "https://placehold.co/900x900/111111/eeeeee?text=NIKE+FLIGHT+CL"
+
+  # ------------------------------------------------------------
+  # STANDARD ERA — layout: years  ->  year sections with 1-3 cards
+  # ------------------------------------------------------------
+  - id: adidas-star
+    title: "THE ADIDAS STAR ERA (2001–2024)"
+    layout: years
+    years:
+      - year: 2026
+        balls:
+          - name: "FINALE 26 KNOCKOUT"
+            stage: "Knockout Stage"
+            description: >
+              Introduced from the Round of 16 onward, with a refreshed star
+              print and higher-visibility panel contrast.
+            image: "https://placehold.co/600x600/2a2a2a/eeeeee?text=Finale+26+Knockout"
+            specs:
+              - { label: "Rounds", value: "R16–QF" }
+              - { label: "Tech", value: "CTR-CORE" }
+          - name: "FINALE 26 SPECIAL"
+            stage: "Special Edition"
+            highlight: true
+            description: >
+              Limited-run edition used for a handful of showcase fixtures
+              during the season.
+            image: "https://placehold.co/600x600/33383f/eeeeee?text=Finale+26+Special"
+            specs:
+              - { label: "Games", value: "4" }
+              - { label: "Finish", value: "Gloss" }
+          - name: "FINALE 26 FINAL"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              The showpiece ball for the semi-finals and the Final, with
+              host-city graphics and gold detailing.
+            image: "https://placehold.co/600x600/1c1c22/eeeeee?text=Finale+26+Final"
+            specs:
+              - { label: "Venue", value: "TBD" }
+              - { label: "Detail", value: "Gold" }
+
+      - year: 2024
+        balls:
+          - name: "FINALE 24 LONDON"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              Inspired by Wembley, featuring vibrant fan graphics and
+              high-frequency welding.
+            image: "https://placehold.co/600x600/3a2f28/eeeeee?text=Finale+24+London"
+            specs:
+              - { label: "Venue", value: "Wembley" }
+              - { label: "Tech", value: "CTR-CORE" }
+          - name: "FINALE 23/24 GROUP"
+            stage: "Group Stage"
+            description: >
+              The standard seasonal edition with deep blue and white
+              contrast star pattern.
+            image: "https://placehold.co/600x600/2f3440/eeeeee?text=Finale+23-24+Group"
+            specs:
+              - { label: "Weight", value: "PRO" }
+              - { label: "Panels", value: "KIROS" }
+          - name: "FINALE 24 TRAINING"
+            stage: "Practice"
+            description: >
+              Durable construction designed for high-intensity training with
+              pro aerodynamics.
+            image: "https://placehold.co/600x600/44403a/eeeeee?text=Finale+24+Training"
+            specs:
+              - { label: "Type", value: "BUTYL" }
+              - { label: "Seam", value: "STITCHED" }
+
+      - year: 2012
+        balls:
+          - name: "FINALE 12 MUNICH"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              Allianz Arena celebration with textured surface for optimal
+              wet-weather grip.
+            image: "https://placehold.co/600x600/28323a/eeeeee?text=Finale+12+Munich"
+            specs:
+              - { label: "Legacy", value: "STAR" }
+              - { label: "Print", value: "LINE" }
+          - name: "FINALE 11/12 GROUP"
+            stage: "Group Stage"
+            description: >
+              Silver stars accents on classic star layout used during the
+              group stages.
+            image: "https://placehold.co/600x600/303030/eeeeee?text=Finale+11-12+Group"
+            specs:
+              - { label: "Bladder", value: "BONDED" }
+              - { label: "Feel", value: "430G" }
+          - name: "FINALE 12 CLUB"
+            stage: "Practice"
+            description: >
+              High-visibility training variant for evening sessions across
+              Europe.
+            image: "https://placehold.co/600x600/3d3d3d/eeeeee?text=Finale+12+Club"
+            specs:
+              - { label: "Use", value: "TURF" }
+              - { label: "Grade", value: "C15" }
+
+      - year: 2005
+        balls:
+          - name: "FINALE 5 ISTANBUL"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              The ball of the 'Miracle'. Navy blue stars with silver
+              Bosphorus patterns.
+            image: "https://placehold.co/600x600/22262e/eeeeee?text=Finale+5+Istanbul"
+            specs:
+              - { label: "Final", value: "LFC 05" }
+              - { label: "Finish", value: "MATTE" }
+          - name: "FINALE 04/05"
+            stage: "Group Stage"
+            description: >
+              First evolution toward high-speed aerodynamics of the mid
+              2000s.
+            image: "https://placehold.co/600x600/2b2b2b/eeeeee?text=Finale+04-05"
+            specs:
+              - { label: "Skin", value: "PU" }
+              - { label: "Core", value: "LATEX" }
+          - name: "FINALE 5 TRAINING"
+            stage: "Practice"
+            description: >
+              Heavy-duty composite materials designed for all-weather
+              durability.
+            image: "https://placehold.co/600x600/383838/eeeeee?text=Finale+5+Training"
+            specs:
+              - { label: "Wear", value: "HIGH" }
+              - { label: "Seam", value: "STITCH" }
+
+      - year: 2001
+        balls:
+          - name: "FINALE 01 MILAN"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              The birth of an icon. The debut of the 'Starball'
+              construction.
+            image: "https://placehold.co/600x600/2e2e2e/eeeeee?text=Finale+01+Milan"
+            specs:
+              - { label: "Status", value: "FIRST" }
+              - { label: "Stars", value: "SILVER" }
+          - name: "FINALE 01 ORIGINAL"
+            stage: "Debut Print"
+            description: >
+              Conservative silver and white panels marking the
+              competition's new era.
+            image: "https://placehold.co/600x600/3a3a3a/eeeeee?text=Finale+01+Original"
+            specs:
+              - { label: "Brand", value: "ADIDAS" }
+              - { label: "Icon", value: "STAR" }
+
+  # ------------------------------------------------------------
+  # Another hero-style era, at the bottom of the timeline
+  # ------------------------------------------------------------
+  - id: original-nike
+    title: "THE ORIGINAL NIKE ERA (EARLY 90S)"
+    layout: hero
+    context: >
+      The Champions League rebranding in 1992 saw Nike provide the inaugural
+      balls. These were traditional 32-panel hexagons.
+    featured_ball:
+      name: "NIKE HK 800"
+      subtitle: "DEBUT: 1992/93"
+      image: "https://placehold.co/900x900/151515/dddddd?text=NIKE+HK+800"
+
+summary:
+  title: "TECHNICAL EVOLUTION SUMMARY"
+  items:
+    - heading: "STITCHING"
+      text: >
+        Transitioned from hand-stitched leather panels (90s) to thermal
+        bonding (2000s) for zero water uptake.
+    - heading: "AERODYNAMICS"
+      text: >
+        Introduction of 'dimple' textures and grooves to reduce drag and
+        stabilize flight paths at high velocities.
+    - heading: "CORE TECH"
+      text: >
+        Modern balls like the Finale 24 feature internal bladders designed
+        for maximal air retention and shape integrity.
+
+footer:
+  copyright: "© 2026 CHAMPIONS ARCHIVE. ALL RIGHTS RESERVED."
+  links:
+    - "Privacy Policy"
+    - "Terms of Service"
+    - "Contact Us"
