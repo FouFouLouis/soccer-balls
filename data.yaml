@@ -47,7 +47,7 @@ eras:
     featured_ball:
       name: "NIKE FLIGHT CL"
       subtitle: "ESTIMATED DEBUT: 2024/25"
-      image: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/da2482fab86d455fa46c054fe7234653_9366/UEFA_Champions_League_26-27_Pro_Ball_White_KE9757_01_00_standard.jpg"
+      image: "/img/balls/2026-27-league-pro.png"
 
   # ------------------------------------------------------------
   # STANDARD ERA — layout: years  ->  year sections with 1-3 cards
