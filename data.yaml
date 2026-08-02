@@ -29,7 +29,7 @@ site:
     side-by-side.
   partner_badge:
     label: "CURRENT PARTNER"
-    value: "NIKE (INCOMING)"
+    value: "ADIDAS"
   nav:
     - "Champions League"
     - "Archive"
@@ -43,7 +43,7 @@ eras:
     title: "Upcoming Champions League 2026-2027"
     layout: hero
     context: >
-      We already know the design of the group stage ball.
+      The final balls of the Adidas era!
     featured_ball:
       name: "NIKE FLIGHT CL"
       subtitle: "ESTIMATED DEBUT: 2024/25"
