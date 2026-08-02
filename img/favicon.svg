@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="fav-t">
+  <title id="fav-t">CL Ball Archive</title>
+  <!-- Small-size variant of ball-star-line.svg: the outline drawing there
+       vanishes below ~48px, so the mark is rebuilt as a solid disc with the
+       centre star knocked out. One shape, full contrast, legible at 16px. -->
+  <circle cx="128" cy="128" r="120" fill="#1b2fc8" />
+  <path
+    fill="#ffffff"
+    d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z"
+    transform="translate(128 131) scale(2.32)" />
+</svg>
