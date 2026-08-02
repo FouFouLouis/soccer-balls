@@ -58,8 +58,8 @@ eras:
     years:
       - year: 2026
         balls:
-          - name: "Group stage"
-            stage: "Group Stage"
+          - name: "League stage"
+            stage: "League Stage"
             description: >
               Introduced from the Round of 16 onward, with a refreshed star
               print and higher-visibility panel contrast.
@@ -71,12 +71,11 @@ eras:
             stage: "Special Edition"
             highlight: true
             description: >
-              Limited-run edition used for a handful of showcase fixtures
-              during the season.
+              LLaunched in January 2026, the Adidas Champions League 25-26 'Third' ball was used during the final matchdays of the League Phase and the Knockout Round Play-offs. 
             image: "https://www.futbolemotion.fr/imagesarticulos/291597/750/balon-adidas-uefa-champions-league-2025-2026-3rd-pro-white-silver-met-1.webp"
             specs:
-              - { label: "Games", value: "4" }
-              - { label: "Finish", value: "Gloss" }
+              - { label: "Games", value: "2" }
+              - { label: "Color", value: "White and grey" }
           - name: "FINALE 26 FINAL"
             stage: "Final Edition"
             highlight: true
@@ -87,6 +86,37 @@ eras:
             specs:
               - { label: "Venue", value: "TBD" }
               - { label: "Detail", value: "Gold" }
+              
+      - year: 2025
+        balls:
+          - name: "FINALE 25 LONDON"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              Inspired by Wembley, featuring vibrant fan graphics and
+              high-frequency welding.
+            image: "https://placehold.co/600x600/3a2f28/eeeeee?text=Finale+24+London"
+            specs:
+              - { label: "Venue", value: "Wembley" }
+              - { label: "Tech", value: "CTR-CORE" }
+          - name: "FINALE 23/24 GROUP"
+            stage: "Group Stage"
+            description: >
+              The standard seasonal edition with deep blue and white
+              contrast star pattern.
+            image: "https://placehold.co/600x600/2f3440/eeeeee?text=Finale+23-24+Group"
+            specs:
+              - { label: "Weight", value: "PRO" }
+              - { label: "Panels", value: "KIROS" }
+          - name: "FINALE 24 TRAINING"
+            stage: "Practice"
+            description: >
+              Durable construction designed for high-intensity training with
+              pro aerodynamics.
+            image: "https://placehold.co/600x600/44403a/eeeeee?text=Finale+24+Training"
+            specs:
+              - { label: "Type", value: "BUTYL" }
+              - { label: "Seam", value: "STITCHED" }
 
       - year: 2024
         balls:
