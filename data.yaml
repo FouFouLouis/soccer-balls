@@ -58,12 +58,12 @@ eras:
     years:
       - year: 2026
         balls:
-          - name: "FINALE 26 KNOCKOUT"
-            stage: "Knockout Stage"
+          - name: "Group stage"
+            stage: "Group Stage"
             description: >
               Introduced from the Round of 16 onward, with a refreshed star
               print and higher-visibility panel contrast.
-            image: "https://placehold.co/600x600/2a2a2a/eeeeee?text=Finale+26+Knockout"
+            image: "https://assets.adidas.com/images/w_500,f_auto,q_auto/f9454a20bdea41968ae66e3b2583ae7a_9366/UCL_Pro_25-26_League_Stage_Ball_White_JD0188_HM1.jpg"
             specs:
               - { label: "Rounds", value: "R16–QF" }
               - { label: "Tech", value: "CTR-CORE" }
@@ -83,7 +83,7 @@ eras:
             description: >
               The showpiece ball for the semi-finals and the Final, with
               host-city graphics and gold detailing.
-            image: "https://placehold.co/600x600/1c1c22/eeeeee?text=Finale+26+Final"
+            image: "https://www.prodirectsport.fr/cdn/shop/files/1041948_main.jpg?v=1785656837&width=2000"
             specs:
               - { label: "Venue", value: "TBD" }
               - { label: "Detail", value: "Gold" }
