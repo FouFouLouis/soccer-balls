@@ -47,7 +47,7 @@ eras:
     featured_ball:
       name: "NIKE FLIGHT CL"
       subtitle: "ESTIMATED DEBUT: 2024/25"
-      image: "/img/balls/2026-27-league-pro.png"
+      image: "img/balls/2026-27-league-pro.png"
 
   # ------------------------------------------------------------
   # STANDARD ERA — layout: years  ->  year sections with 1-3 cards
