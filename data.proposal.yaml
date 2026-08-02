@@ -1,0 +1,582 @@
+# ============================================================
+# PROPOSITION DE STRUCTURE — catalogue éditorial + marchand
+# ------------------------------------------------------------
+# Ce fichier ne remplace pas data.yaml : c'est une maquette de
+# la structure cible, avec de vraies données en exemple.
+#
+# Principe directeur : SEPARER LE CATALOGUE DE LA MISE EN PAGE.
+#
+#   taxonomies:  vocabulaires contrôlés (gammes, phases, certifs)
+#   balls:       catalogue canonique — 1 entrée = 1 DESIGN
+#   eras:        la timeline, qui ne fait que REFERENCER des ids
+#
+# Aujourd'hui un ballon vit à l'intérieur de eras>years>balls,
+# donc il ne peut exister qu'à un seul endroit de la page. Un
+# site marchand a besoin du même ballon dans la timeline, dans
+# la boutique, dans "ballons de finale", dans "en stock", dans
+# un panier... D'où le catalogue plat + références.
+#
+# Les trois niveaux du volet marchand :
+#   ball     -> le DESIGN            "UCL 25/26 League Phase"
+#   variant  -> la GAMME             Pro / Competition / League / Club / Mini
+#   sku      -> l'ARTICLE VENDABLE   gamme x taille x coloris = 1 code article
+# ============================================================
+
+
+site:
+  brand: "CL BALL ARCHIVE"
+  title_line_1: "CHAMPIONS LEAGUE"
+  title_line_2: "TIMELINE"
+  intro: >
+    A comprehensive journey through the evolution of the world's most iconic
+    match ball.
+  # Ajouts utiles dès qu'il y a du commerce :
+  currency: "EUR"          # devise d'affichage par défaut
+  vat_included: true       # les prix ci-dessous sont TTC
+  partner_badge: { label: "CURRENT PARTNER", value: "ADIDAS" }
+  nav:
+    - { label: "Champions League", href: "#top" }
+    - { label: "Archive", href: "#archive" }
+    - { label: "Boutique", href: "/shop" }   # nav devient objet, pas string
+
+
+# ============================================================
+# 1. TAXONOMIES — les référentiels partagés
+# ------------------------------------------------------------
+# Ecrit UNE fois ici, référencé par id partout ailleurs. Evite
+# de redécrire "FIFA Quality Pro / thermocollé / butyl" sur
+# chacun des 25 ballons.
+# ============================================================
+
+taxonomies:
+
+  # --- Les gammes commerciales adidas, du haut vers le bas ---
+  tiers:
+    - id: pro
+      label: "Pro"
+      aka: ["Official Match Ball", "OMB"]
+      rank: 1
+      construction: "Panneaux thermocollés, sans couture (seamless)"
+      certification: fifa-quality-pro
+      bladder: "Butyl haute performance"
+      sizes: [5]
+      price_band: { min: 120, max: 170 }
+      blurb: >
+        Le ballon officiel utilisé sur le terrain. Haut de gamme absolu.
+
+    - id: competition
+      label: "Competition"
+      rank: 2
+      construction: "Panneaux thermocollés, matériaux légèrement moins premium"
+      certification: fifa-quality-pro
+      bladder: "Butyl"
+      sizes: [4, 5]
+      price_band: { min: 55, max: 75 }
+      blurb: >
+        Même look et même certification que le Pro, à un prix accessible.
+        Le meilleur rapport performance/prix du catalogue.
+
+    - id: league
+      label: "League"
+      rank: 3
+      construction: "Construction seamless TSBE"
+      certification: fifa-basic
+      sizes: [4, 5]
+      # Déclinaisons allégées jeunes : poids imposé, pas une taille standard
+      youth_weights: ["J290", "J350"]
+      price_band: { min: 35, max: 55 }
+      blurb: "Ballon de match abordable pour le jeu régulier."
+
+    - id: training
+      label: "Training"
+      rank: 4
+      construction: "Panneaux cousus machine, surface texturée"
+      certification: null
+      bladder: "Butyl"
+      sizes: [3, 4, 5]
+      price_band: { min: 28, max: 40 }
+      blurb: "Conçu pour encaisser les entraînements répétés."
+
+    - id: club
+      label: "Club"
+      rank: 5
+      construction: "Panneaux cousus machine, entrée de gamme"
+      certification: null
+      bladder: "Butyl"
+      sizes: [3, 4, 5]
+      price_band: { min: 18, max: 30 }
+      blurb: "Le premier prix, pour les clubs et le loisir."
+
+    - id: mini
+      label: "Mini"
+      rank: 6
+      construction: "Réplique décorative"
+      certification: null
+      sizes: [1]
+      price_band: { min: 12, max: 20 }
+      blurb: >
+        Taille 1, graphisme identique au Pro. Souvenir / collection —
+        gros volume, forte marge, à ne pas négliger en boutique.
+
+  # --- Les équipementiers ---
+  # adidas fournit le ballon depuis 2001 et jusqu'à la fin de la
+  # saison 2026/27 incluse. Nike reprend à partir de 2027/28
+  # (négociation exclusive UC3 ouverte en mars 2026, non signée
+  # à ce jour) — d'où `confirmed: false` sur la période Nike.
+  manufacturers:
+    - id: adidas
+      label: "adidas"
+      period: { from: "2001/02", to: "2026/27" }
+      confirmed: true
+    - id: nike
+      label: "Nike"
+      period: { from: "2027/28", to: "2030/31" }
+      confirmed: false
+      note: >
+        Négociation exclusive UC3 / Nike annoncée en mars 2026, portant
+        sur les trois compétitions masculines (UCL, UEL, UECL).
+        Aucun accord signé au 02/08/2026.
+      sources:
+        - "https://www.sportcal.com/news/nike-enters-exclusive-talks-to-take-over-uefa-match-ball-contract/"
+    - id: nike-legacy
+      label: "Nike"
+      period: { from: "1992/93", to: "2000/01" }
+      confirmed: true
+
+  # --- Les phases de compétition = l'édition graphique ---
+  stages:
+    - { id: league-phase, label: "Phase de ligue",   aka: ["Group Stage"], rank: 1 }
+    - { id: knockout,     label: "Phase finale",     aka: ["Round of 16", "Knockout"], rank: 2 }
+    - { id: final,        label: "Finale",           rank: 3, highlight: true }
+    - { id: special,      label: "Édition spéciale", rank: 4, highlight: true }
+    - { id: training-ed,  label: "Entraînement",     rank: 5 }
+
+  certifications:
+    - id: fifa-quality-pro
+      label: "FIFA Quality Pro"
+      description: "Le plus haut niveau : rebond, rondeur, absorption d'eau, conservation de la pression."
+    - id: fifa-basic
+      label: "FIFA Basic"
+      description: "Certification d'entrée, adaptée au jeu de club."
+
+  sizes:
+    - { id: 5, label: "Taille 5", circumference_cm: "68–70", weight_g: "410–450", audience: "Adulte / +12 ans" }
+    - { id: 4, label: "Taille 4", circumference_cm: "63–66", weight_g: "350–390", audience: "8–12 ans / futsal" }
+    - { id: 3, label: "Taille 3", circumference_cm: "58–61", weight_g: "300–320", audience: "moins de 8 ans" }
+    - { id: 1, label: "Taille 1", circumference_cm: "43–48", audience: "Mini / collection" }
+
+
+# ============================================================
+# 2. BALLS — le catalogue canonique
+# ------------------------------------------------------------
+# Une entrée = UN DESIGN (pas un produit, pas une saison).
+# Trois blocs par ballon :
+#   - identité + éditorial  (ce que le wiki affiche)
+#   - design + media
+#   - commerce              (les gammes et les SKU)
+#
+# `id` est une CLE STABLE : elle finit dans les URLs, dans les
+# paniers, dans les commandes. On ne la renomme jamais, même si
+# le nom commercial change.
+# ============================================================
+
+balls:
+
+  # ----------------------------------------------------------
+  # EXEMPLE 1 — un ballon en vente, décliné sur toute la gamme
+  # ----------------------------------------------------------
+  - id: ucl-2526-league-phase
+    slug: "ucl-25-26-league-phase"
+    name: "UCL 25/26 League Phase"
+    manufacturer: adidas
+    family: "Finale"          # la lignée starball ouverte en 2001
+    generation: 25            # 25e édition — utile pour les anniversaires
+    season: "2025/26"
+    season_start: 2025        # champ numérique pour trier / filtrer
+    stage: league-phase       # -> taxonomies.stages
+    release_date: 2025-08-14
+
+    # Éditorial : deux longueurs, deux usages
+    summary: >
+      Le ballon de la phase de ligue 2025/26, qui célèbre les 25 ans du
+      starball avec un graphisme inspiré des horloges astronomiques.
+    story: >
+      Texte long pour la fiche wiki : contexte, réception, matchs marquants.
+      Séparé de `summary` pour que la carte reste courte et la page riche.
+
+    design:
+      colorway: "White / Dark Blue / Gold Metallic"
+      colors: ["#ffffff", "#1b2a5c", "#c9a24a"]
+      inspiration: "Horloges astronomiques et signes du zodiaque"
+      panel_shape: "starball"
+      panel_count: 12
+
+    competition:
+      name: "UEFA Champions League"
+      usage: "Ensemble de la phase de ligue"
+      venue: null
+      city: null
+
+    media:
+      hero: "img/ucl-2526-league-phase/hero.jpg"
+      gallery:
+        - { src: "img/ucl-2526-league-phase/packshot.jpg", alt: "Vue de face", role: packshot }
+        - { src: "img/ucl-2526-league-phase/angle.jpg",    alt: "Trois quarts", role: angle }
+        - { src: "img/ucl-2526-league-phase/pitch.jpg",    alt: "En match",     role: lifestyle }
+
+    # Ce que la carte affiche déjà aujourd'hui — inchangé
+    specs:
+      - { label: "Tech",  value: "Seamless thermocollé" }
+      - { label: "Certif", value: "FIFA Quality Pro" }
+
+    # ------ VOLET MARCHAND ------------------------------------
+    commerce:
+      # announced  : existence connue, ni visuel ni prix -> pas de fiche produit
+      # preorder   : référencé, précommandable
+      # available  : en vente
+      # discontinued : fin de vie, écoulement du stock
+      # collector  : plus vendu neuf, cote de collection
+      status: available
+      brand_line: "UCL"
+
+      variants:
+        # --- gamme Pro ---
+        - tier: pro                                    # -> taxonomies.tiers
+          name: "UCL Pro 25/26 League Phase"
+          # Ce qui SURCHARGE ou PRECISE la taxonomie pour ce ballon-ci :
+          materials: "61 % polyuréthane, 30 % polyester recyclé, 9 % rayonne"
+          weight_g: 430
+          highlights:
+            - "Ballon officiel utilisé en match"
+            - "Vessie butyl haute rétention"
+          skus:
+            - sku: "ADI-UCL2526-LP-PRO-5"     # TON identifiant, tu le maîtrises
+              supplier_ref: "JD0188"          # le code article adidas
+              gtin: "4067886000000"           # EAN/UPC — placeholder à saisir
+              size: 5
+              colorway: "White / Dark Blue / Gold Met."
+              price:      { amount: 169.99, currency: EUR }
+              compare_at: { amount: 169.99, currency: EUR }   # pour afficher une remise
+              cost:       { amount: 96.00,  currency: EUR }   # PA — jamais exposé au front
+              stock: 12
+              status: in_stock                # in_stock | backorder | sold_out
+              logistics: { weight_g: 480, box_cm: [24, 24, 24], ships_deflated: true }
+
+        # --- gamme Competition ---
+        - tier: competition
+          name: "UCL Competition 25/26 League Phase"
+          skus:
+            - sku: "ADI-UCL2526-LP-CMP-5"
+              supplier_ref: "JD0189"
+              size: 5
+              price: { amount: 64.99, currency: EUR }
+              stock: 40
+              status: in_stock
+            - sku: "ADI-UCL2526-LP-CMP-4"
+              supplier_ref: "JD0190"
+              size: 4
+              price: { amount: 59.99, currency: EUR }
+              stock: 0
+              status: backorder
+
+        # --- gamme League ---
+        - tier: league
+          name: "UCL League 25/26 League Phase"
+          skus:
+            - { sku: "ADI-UCL2526-LP-LGE-5", size: 5, price: { amount: 44.99, currency: EUR }, stock: 60, status: in_stock }
+            - { sku: "ADI-UCL2526-LP-LGE-4", size: 4, price: { amount: 42.99, currency: EUR }, stock: 35, status: in_stock }
+            # déclinaisons allégées jeunes : même taille 4/5, poids imposé
+            - { sku: "ADI-UCL2526-LP-LGE-J290", size: 4, youth_weight: "J290", price: { amount: 44.99, currency: EUR }, stock: 20, status: in_stock }
+
+        # --- gamme Club ---
+        - tier: club
+          name: "UCL Club 25/26 League Phase"
+          skus:
+            - { sku: "ADI-UCL2526-LP-CLB-5", size: 5, price: { amount: 24.99, currency: EUR }, stock: 120, status: in_stock }
+            - { sku: "ADI-UCL2526-LP-CLB-4", size: 4, price: { amount: 24.99, currency: EUR }, stock: 80,  status: in_stock }
+            - { sku: "ADI-UCL2526-LP-CLB-3", size: 3, price: { amount: 22.99, currency: EUR }, stock: 45,  status: in_stock }
+
+        # --- gamme Mini ---
+        - tier: mini
+          name: "UCL Mini 25/26 League Phase"
+          skus:
+            - { sku: "ADI-UCL2526-LP-MIN-1", size: 1, price: { amount: 14.99, currency: EUR }, stock: 200, status: in_stock }
+
+  # ----------------------------------------------------------
+  # EXEMPLE 2 — ballon de finale : peu de gammes, forte valeur
+  # Montre qu'un design n'a PAS à décliner toutes les gammes.
+  # ----------------------------------------------------------
+  - id: ucl-2526-final-budapest
+    slug: "ucl-25-26-final-budapest"
+    name: "UCL Final Budapest 2026"
+    manufacturer: adidas
+    family: "Finale"
+    generation: 25
+    season: "2025/26"
+    season_start: 2025
+    stage: final              # -> stages.final a highlight: true
+    release_date: 2026-02-10
+
+    summary: >
+      Le ballon de la finale 2026 à Budapest : violet métallisé à pigment
+      caméléon, motifs Art nouveau, lions et dragons.
+    story: >
+      Texte long.
+
+    design:
+      colorway: "Purple Metallic / White / Yellow"
+      colors: ["#5b3a8e", "#ffffff", "#f2c53d"]
+      inspiration: "Architecture Art nouveau de Budapest, lions et dragons"
+      finish: "Gloss à pigment caméléon"
+      panel_shape: "starball"
+
+    competition:
+      name: "UEFA Champions League"
+      usage: "Finale uniquement"
+      venue: "Puskás Aréna"
+      city: "Budapest"
+      country: "Hongrie"
+      match_date: 2026-05-30
+
+    media:
+      hero: "img/ucl-2526-final-budapest/hero.jpg"
+
+    specs:
+      - { label: "Venue",  value: "Puskás Aréna" }
+      - { label: "Finish", value: "Chameleon gloss" }
+
+    commerce:
+      status: preorder
+      release_notes: "Précommande, expédition à partir du 01/05/2026"
+      variants:
+        - tier: pro
+          name: "UCL Pro Final Budapest"
+          limited_edition: true
+          skus:
+            - sku: "ADI-UCL2526-FIN-PRO-5"
+              size: 5
+              price: { amount: 179.99, currency: EUR }
+              stock: 0
+              status: preorder
+              preorder_ships: 2026-05-01
+        - tier: league
+          skus:
+            - { sku: "ADI-UCL2526-FIN-LGE-5", size: 5, price: { amount: 49.99, currency: EUR }, stock: 0, status: preorder }
+        - tier: mini
+          skus:
+            - { sku: "ADI-UCL2526-FIN-MIN-1", size: 1, price: { amount: 16.99, currency: EUR }, stock: 0, status: preorder }
+
+  # ----------------------------------------------------------
+  # EXEMPLE 3 — la DERNIERE saison adidas
+  # 2026/27 clôt 26 ans de starball. Rien de spécial dans la
+  # structure : c'est un ballon adidas normal. La fin d'ère se
+  # lit dans taxonomies.manufacturers, pas ici — sinon il faut
+  # rééditer la fiche le jour où le contrat bouge.
+  # ----------------------------------------------------------
+  - id: ucl-2627-league-phase
+    slug: "ucl-26-27-league-phase"
+    name: "UCL 26/27 League Phase"
+    manufacturer: adidas
+    family: "Finale"
+    generation: 26
+    season: "2026/27"
+    season_start: 2026
+    stage: league-phase
+
+    summary: >
+      Le dernier ballon de phase de ligue de l'ère adidas.
+    editorial_flags: [last-of-era]     # sert à afficher un bandeau, pas à trier
+
+    media:
+      hero: "https://assets.adidas.com/images/w_600,f_auto,q_auto/da2482fab86d455fa46c054fe7234653_9366/UEFA_Champions_League_26-27_Pro_Ball_White_KE9757_01_00_standard.jpg"
+
+    commerce:
+      status: preorder
+      variants:
+        - tier: pro
+          skus:
+            - sku: "ADI-UCL2627-LP-PRO-5"
+              supplier_ref: "KE9757"
+              size: 5
+              price: { amount: 169.99, currency: EUR }
+              stock: 0
+              status: preorder
+
+  # ----------------------------------------------------------
+  # EXEMPLE 4 — ballon ANNONCE, ni sorti ni confirmé
+  # C'est le cas de la bascule Nike 2027/28. On veut une entrée
+  # dans la timeline, mais surtout PAS de fiche produit : ni
+  # visuel officiel, ni gamme, ni prix, ni certitude que le
+  # contrat soit signé.
+  #
+  # La règle de rendu : `commerce.status: announced` => le front
+  # n'affiche ni prix ni bouton panier, et colle le disclaimer.
+  # ----------------------------------------------------------
+  - id: ucl-2728-nike-tbd
+    slug: "ucl-27-28-nike"
+    name: "Ballon UCL 2027/28 (Nike)"
+    manufacturer: nike
+    family: null              # la lignée "Finale" s'arrête avec adidas
+    season: "2027/28"
+    season_start: 2027
+    stage: league-phase
+
+    confirmed: false          # <- le flag qui gouverne tout l'affichage
+    summary: >
+      Nike doit succéder à adidas comme fournisseur du ballon officiel à
+      partir de 2027/28. Ni le nom, ni le design, ni la gamme ne sont connus.
+    disclaimer: >
+      Information non confirmée : UC3 est entré en négociation exclusive
+      avec Nike en mars 2026, aucun accord n'a été signé à ce jour.
+    sources:
+      - { label: "Sportcal", url: "https://www.sportcal.com/news/nike-enters-exclusive-talks-to-take-over-uefa-match-ball-contract/", date: 2026-04-09 }
+      - { label: "Inside World Football", url: "https://www.insideworldfootball.com/2026/04/10/uefas-club-competition-ball-deal-bounces-back-nike", date: 2026-04-10 }
+    last_reviewed: 2026-08-02   # à revoir : la signature peut tomber à tout moment
+
+    media:
+      hero: null                # pas de visuel -> le front met un placeholder
+      placeholder_text: "Design non dévoilé"
+
+    commerce:
+      status: announced
+      retail: false
+      variants: []              # volontairement vide
+
+  # ----------------------------------------------------------
+  # EXEMPLE 5 — ballon d'archive : plus vendu neuf
+  # Cas très fréquent sur 25 saisons. Le ballon reste dans la
+  # timeline, mais ne génère pas de fiche produit — il peut
+  # porter une cote de collection.
+  # ----------------------------------------------------------
+  - id: ucl-0405-final-istanbul
+    slug: "finale-5-istanbul"
+    name: "Finale 5 Istanbul"
+    manufacturer: adidas
+    family: "Finale"
+    generation: 4
+    season: "2004/05"
+    season_start: 2004
+    stage: final
+
+    summary: >
+      Le ballon de la « nuit d'Istanbul ». Étoiles bleu marine et motifs
+      argentés inspirés du Bosphore.
+
+    design:
+      colorway: "White / Navy / Silver"
+      panel_shape: "truncated icosahedron"
+      panel_count: 32
+
+    competition:
+      name: "UEFA Champions League"
+      usage: "Finale uniquement"
+      venue: "Atatürk Olympic Stadium"
+      city: "Istanbul"
+      match_date: 2005-05-25
+
+    media:
+      hero: "img/archive/finale-5-istanbul.jpg"
+
+    specs:
+      - { label: "Final",  value: "LFC 05" }
+      - { label: "Finish", value: "Matte" }
+
+    commerce:
+      status: collector       # -> pas de bouton "ajouter au panier"
+      retail: false
+      market_value:           # cote indicative, sourcée et datée
+        low:  { amount: 180, currency: EUR }
+        high: { amount: 420, currency: EUR }
+        updated: 2026-07-15
+        note: "OMB en bon état, hors certificat d'authenticité"
+
+
+# ============================================================
+# 3. ERAS — la timeline, qui ne fait plus que référencer
+# ------------------------------------------------------------
+# Plus aucun contenu de ballon ici : uniquement des ids. On peut
+# donc réordonner, republier, réutiliser un ballon dans plusieurs
+# vues sans jamais dupliquer sa fiche.
+# ============================================================
+
+# Les eras suivent les frontières d'équipementier, dans l'ordre
+# d'affichage (le plus récent en haut). Chaque era pointe vers
+# taxonomies.manufacturers plutôt que de redire les dates.
+eras:
+
+  - id: nike-return
+    title: "LE RETOUR DE NIKE (À PARTIR DE 2027/28)"
+    manufacturer: nike            # -> confirmed: false
+    layout: hero
+    context: >
+      Après vingt-six saisons, adidas passe la main. Nike doit reprendre
+      la fourniture du ballon officiel des trois compétitions masculines.
+      Le starball, apparu en 2001, devrait disparaître.
+    featured_ball: ucl-2728-nike-tbd
+
+  - id: adidas-star
+    title: "L'ÈRE DU STARBALL ADIDAS (2001/02 – 2026/27)"
+    manufacturer: adidas
+    layout: years
+    context: >
+      Vingt-six saisons de starball, de Milan 2001 à la dernière finale
+      adidas.
+    years:
+      - year: "2026/27"
+        balls: [ucl-2627-league-phase]
+      - year: "2025/26"
+        balls: [ucl-2526-league-phase, ucl-2526-final-budapest]
+      - year: "2004/05"
+        balls: [ucl-0405-final-istanbul]
+
+  - id: original-nike
+    title: "LA PREMIÈRE ÈRE NIKE (1992/93 – 2000/01)"
+    manufacturer: nike-legacy
+    layout: hero
+    context: >
+      Le rebranding de 1992 : Nike fournit les premiers ballons de la
+      Champions League, en 32 panneaux hexagonaux traditionnels.
+    featured_ball: nike-hk-800      # un id, plus un objet inline
+
+
+# ============================================================
+# 4. COLLECTIONS — les rayons de la boutique
+# ------------------------------------------------------------
+# Purement déclaratif : soit une liste d'ids figée, soit un
+# filtre évalué à l'affichage. C'est ce qui permet d'ouvrir un
+# rayon sans toucher au catalogue.
+# ============================================================
+
+collections:
+  - id: finales
+    title: "Ballons de finale"
+    description: "Chaque finale, sa ville, son ballon."
+    filter: { stage: final }
+
+  - id: en-stock
+    title: "Disponibles immédiatement"
+    filter: { commerce_status: available }
+
+  - id: budget
+    title: "Moins de 50 €"
+    filter: { max_price: 50 }
+
+  - id: coup-de-coeur
+    title: "Notre sélection"
+    balls: [ucl-2526-final-budapest, ucl-0405-final-istanbul]   # liste manuelle
+
+
+summary:
+  title: "TECHNICAL EVOLUTION SUMMARY"
+  items:
+    - heading: "STITCHING"
+      text: >
+        Du cuir cousu main (années 90) au thermocollage (années 2000),
+        qui supprime l'absorption d'eau.
+
+footer:
+  copyright: "© 2026 CHAMPIONS ARCHIVE."
+  links:
+    - { label: "Mentions légales", href: "/legal" }
+    - { label: "CGV",              href: "/cgv" }
+    - { label: "Contact",          href: "/contact" }

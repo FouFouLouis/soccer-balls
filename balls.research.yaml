@@ -1,0 +1,468 @@
+# ============================================================
+# CL BALL ARCHIVE — research catalogue
+# ------------------------------------------------------------
+# Companion file to data.yaml. It holds the FULL research record
+# for every ball; data.yaml keeps only the handful of fields the
+# site actually renders.
+#
+#   data.yaml            -> what the page shows
+#   balls.research.yaml  -> everything we know, with sources
+#
+# The two are linked by `id`. Nothing here is rendered by app.js.
+#
+# ------------------------------------------------------------
+# THE CANONICAL RECORD
+# ------------------------------------------------------------
+# Every ball carries the SAME keys, in the SAME order, always.
+# When a fact is not established, the key stays and the value is
+# null — an absent key means "we forgot to look", null means "we
+# looked and could not confirm". That distinction is the whole
+# point of the structure.
+#
+#   id            slug, also the image basename
+#   season        "YYYY/YY" as UEFA writes it
+#   year          calendar year of the final — sort key
+#   name          exact commercial name
+#   variant       league-phase | knockout | final | special | retail
+#   manufacturer  adidas | Nike | ...
+#   model_code    manufacturer article code
+#   released      first retail availability (YYYY-MM-DD or YYYY-MM)
+#   used_for      which rounds this ball was actually played with
+#   final         date / venue / match — only for the ball used in it
+#   design        colorway / motif / story
+#   tech          panels / construction / surface / bladder /
+#                 certification / materials / weight / size
+#   notes         anything notable that fits nowhere else
+#   image         local file, dimensions, where it came from
+#   sources       URLs backing the record above
+#   confidence    high | medium | low
+#
+# confidence:
+#   high    manufacturer or UEFA confirms it
+#   medium  consistent across reliable secondary sources
+#   low     single source, or sources disagree — see notes
+# ============================================================
+
+meta:
+  batch: "pilot-1"
+  compiled: "2026-08-02"
+  seasons_covered: ["2025/26", "2004/05", "1998/99"]
+  status: "awaiting review"
+  note: >
+    Pilot batch. Three seasons picked to stress the template across
+    three very different evidence regimes: a current season with full
+    manufacturer documentation, a mid-2000s season with good secondary
+    coverage, and a pre-adidas season where almost nothing is
+    documented. If the schema holds for all three it holds for the
+    remaining ~32 seasons.
+
+
+# ============================================================
+# OPEN QUESTIONS — decide these before the next batch
+# ============================================================
+
+open_questions:
+  - id: q-pre-1997-balls
+    question: >
+      Was there an official Champions League match ball before 1997/98?
+    finding: >
+      No. Until the competition adopted a single supplier, clubs played
+      European nights with the ball used in their own domestic league,
+      so seasons 1992/93 to 1996/97 have no official CL ball to
+      document. The Football Balls Database, the most complete
+      catalogue found, starts its Champions League series at 1998/99.
+    impact: >
+      The requested 1992/93 start date yields five seasons with nothing
+      to put in them. Either the archive starts at 1997/98, or those
+      five seasons get a single explanatory entry rather than ball
+      records.
+
+  - id: q-nike-era-start
+    question: "Did Nike supply the 1997/98 season, or only from 1998/99?"
+    finding: >
+      Sources disagree. Several state Nike was UEFA's ball supplier
+      "between 1997 and 2001"; ball databases only document the NK 800
+      Geo from 1998/99. No 1997/98-specific ball has been identified.
+    impact: "Affects where the archive begins. Unresolved."
+
+  - id: q-adidas-first-season
+    question: "Was adidas' first CL ball 2000/01 or 2001/02?"
+    finding: >
+      Football Balls Database lists Nike Geo Merlin for 2000/01 and
+      adidas Finale 1 for 2001/02. Soccer Ball World and Wikipedia
+      instead describe a grey-star adidas Finale in 2000/01 and say
+      adidas took the contract "in 2000". adidas itself marketed a
+      "25 years" ball in 2025/26 counting from 2000/01.
+    impact: >
+      Changes the era boundary on the site. The current data.yaml says
+      "THE ADIDAS STAR ERA (2001-2024)"; adidas' own anniversary ball
+      implies 2000. Needs one authoritative source before the era
+      banner is rewritten.
+
+  - id: q-existing-hero-claim
+    question: >
+      Is the site's "NIKE HK 800 — debut 1992/93" hero entry correct?
+    finding: >
+      No match for a "Nike HK 800" was found in any ball database. The
+      documented Nike Champions League ball is the NK 800 Geo, and it
+      appears in 1998/99, not 1992/93. The current hero block in
+      data.yaml also states the Champions League rebranding in 1992
+      "saw Nike provide the inaugural balls", which contradicts the
+      finding in q-pre-1997-balls.
+    impact: >
+      Two factual errors on the live site. Correcting them is inside
+      the contributor scope defined in WORKFLOW.local.md, but it
+      rewrites a hero block, so worth flagging to the owner first.
+
+
+# ============================================================
+# THE CATALOGUE
+# ============================================================
+
+balls:
+
+  # ----------------------------------------------------------
+  # 2025/26 — three balls across one season
+  # ----------------------------------------------------------
+
+  - id: 2025-26-ucl-pro-league-stage
+    season: "2025/26"
+    year: 2026
+    name: "adidas UCL Pro 25/26 League Stage"
+    variant: league-phase
+    manufacturer: adidas
+    model_code: "JD0188"
+    released: "2025-08-27"
+    used_for: "League phase"
+    final: null
+    design:
+      colorway: "White / Dark Blue / Gold Metallic"
+      motif: >
+        White base with blue star panels outlined in bright yellow,
+        blue adidas wordmark.
+      story: >
+        Each of the twelve star panels carries a different pattern
+        drawn from one of the twelve zodiac constellations — Aries the
+        ram, Taurus the bull, Gemini the twins, Cancer the crab, Leo
+        the lion, Virgo the maiden, Libra the scales, Scorpio the
+        scorpion, Sagittarius the archer, Capricorn the goat, Aquarius
+        the water-bearer and Pisces the two fish. The surrounding
+        graphics reference antique astronomical clocks. The conceit is
+        that every player, like every star, has a place in the galaxy.
+    tech:
+      panels: 12
+      construction: "Thermally bonded, seamless"
+      surface: null
+      bladder: "High-grade butyl"
+      certification: "FIFA Quality Pro"
+      materials: "61% polyurethane, 30% recycled polyester, 9% rayon"
+      weight: null
+      size: 5
+    notes: >
+      Sold at retail as UCL Pro. The same design is issued down the
+      range as Competition, League, Club, Training and Mini — see the
+      retail entry below.
+    image:
+      file: "img/balls/2025-26-ucl-pro-league-stage.jpg"
+      width: 2000
+      height: 2000
+      source_url: "https://assets.adidas.com/images/f9454a20bdea41968ae66e3b2583ae7a_9366/UCL_Pro_25-26_League_Stage_Ball_White_JD0188_HM1.jpg"
+      source_max: "2400x2400 master available at the same URL"
+      credit: "adidas"
+    sources:
+      - "https://football-balls.com/ball-details/adidas-finale-25-official-match-ball-of-champions-league-2025-2026"
+      - "https://www.footyheadlines.com/2024/11/champions-league-25-26-ball.html"
+      - "https://www.unisportstore.com/footballs/adidas-ucl-pro-2526-league-stage-ball/396164/"
+    confidence: high
+
+  - id: 2025-26-ucl-third-25-years
+    season: "2025/26"
+    year: 2026
+    name: "adidas UCL 25/26 Third — 25 Years"
+    variant: special
+    manufacturer: adidas
+    model_code: null
+    released: "2026-01"
+    used_for: "Closing matchdays of the league phase and the knockout play-offs"
+    final: null
+    design:
+      colorway: "White / Silver / Purple / Black"
+      motif: >
+        White and silver base, shimmering silver stars outlined in deep
+        purple, black accents.
+      story: >
+        Marks twenty-five years of adidas as official Champions League
+        ball supplier, counting from 2000/01. The silver-star treatment
+        deliberately echoes the first adidas Champions League ball, and
+        one star panel carries a bespoke "25 YEARS — Official Match
+        Ball Supplier" graphic.
+    tech:
+      panels: 12
+      construction: "Thermally bonded, seamless"
+      surface: null
+      bladder: "High-grade butyl"
+      certification: "FIFA Quality Pro"
+      materials: null
+      weight: null
+      size: 5
+    notes: >
+      Its usage window overlaps with the Budapest final ball on the
+      knockout play-off round; which ball was used for which fixture is
+      not documented. See confidence.
+    image:
+      file: "img/balls/2025-26-ucl-third-25-years.jpg"
+      width: 1080
+      height: 1080
+      source_url: "https://www.footyheadlines.com/2025/05/ucl-25-26-third-ball.html"
+      source_max: "1080x1080 — no higher-resolution product shot located"
+      credit: "adidas, via Footy Headlines"
+    sources:
+      - "https://www.footyheadlines.com/2025/05/ucl-25-26-third-ball.html"
+      - "https://www.soccerbible.com/performance/football-equipment/2026/01/adidas-drop-special-2526-ucl-third-ball/"
+    confidence: medium
+
+  - id: 2025-26-ucl-final-budapest
+    season: "2025/26"
+    year: 2026
+    name: "adidas UCL Final Budapest Pro"
+    variant: final
+    manufacturer: adidas
+    model_code: "JX9077"
+    released: "2026-02-09"
+    used_for: "Knockout stage through to the final"
+    final:
+      date: "2026-05-30"
+      venue: "Puskás Aréna, Budapest"
+      match: "Paris Saint-Germain 1–1 Arsenal (PSG won 4–3 on penalties)"
+    design:
+      colorway: "White / Dark Purple / Solar Yellow / Shock Pink"
+      motif: >
+        Purple base carrying illustrations of a lion and a mythical
+        beast.
+      story: >
+        Both creatures are lifted from Budapest itself — the lion from
+        the Széchenyi Chain Bridge that crosses the Danube. The
+        purple-yellow-pink combination had never been used on a
+        Champions League final ball before.
+    tech:
+      panels: 12
+      construction: "Thermally bonded, seamless"
+      surface: null
+      bladder: "High-grade butyl"
+      certification: "FIFA Quality Pro"
+      materials: null
+      weight: null
+      size: 5
+    notes: >
+      Issued at retail down to Club level as JX9090 (solar yellow /
+      black) and JX9091 (black / white). PSG retained the trophy with
+      this ball; Vitinha was named player of the match in front of
+      61,035 spectators.
+    image:
+      file: "img/balls/2025-26-ucl-final-budapest.jpg"
+      width: 1080
+      height: 1351
+      source_url: "https://www.footyheadlines.com/2025/05/ucl-25-26-final-ball.html"
+      source_max: "1080x1351 — adidas product page blocks automated access"
+      credit: "adidas, via Footy Headlines"
+    sources:
+      - "https://www.footyheadlines.com/2025/05/ucl-25-26-final-ball.html"
+      - "https://en.wikipedia.org/wiki/2026_UEFA_Champions_League_final"
+      - "https://www.adidas.com/us/uefa-champions-league-final-pro-ball/JX9077.html"
+    confidence: high
+
+  - id: 2025-26-retail-range
+    season: "2025/26"
+    year: 2026
+    name: "adidas UCL 25/26 retail range"
+    variant: retail
+    manufacturer: adidas
+    model_code: null
+    released: "2025-08"
+    used_for: "Not a match ball — consumer range carrying the season graphic"
+    final: null
+    design:
+      colorway: "As per the match ball of the same period"
+      motif: "Season graphic reproduced across every tier"
+      story: >
+        The same artwork runs from the Pro match ball down to the
+        size-1 Mini, which is what makes the design recognisable to
+        people who never see the pitch.
+    tech:
+      panels: 12
+      construction: >
+        Thermally bonded for Pro and Competition; machine-stitched from
+        League downwards
+      surface: null
+      bladder: "Butyl"
+      certification: >
+        FIFA Quality Pro (Pro, Competition), FIFA Basic (League), none
+        below
+      materials: null
+      weight: null
+      size: "1 to 5 depending on tier"
+    notes: >
+      Placeholder entry. The tiers are documented in
+      data.proposal.yaml; individual article codes per tier were not
+      collected for this pilot because the tier list, not the tier
+      detail, is what needs validating first.
+    image:
+      file: null
+      width: null
+      height: null
+      source_url: null
+      source_max: null
+      credit: null
+    sources:
+      - "https://www.unisportstore.com/football-equipment/3262-champions-league-footballs/"
+    confidence: low
+
+  # ----------------------------------------------------------
+  # 2004/05 — the season the final ball became a separate object
+  # ----------------------------------------------------------
+
+  - id: 2004-05-finale-4
+    season: "2004/05"
+    year: 2005
+    name: "adidas Finale 4"
+    variant: league-phase
+    manufacturer: adidas
+    model_code: null
+    released: "2004"
+    used_for: "Group stage and knockout rounds up to the final"
+    final: null
+    design:
+      colorway: "White / Red / Silver"
+      motif: "White base with red starball panels"
+      story: >
+        Fourth ball of the Finale series, and fourth star colour: after
+        silver, black and dark blue came red. The rotating star colour
+        was how a single template stayed recognisable yet new each
+        season.
+    tech:
+      panels: 32
+      construction: "Thermally bonded — no hand stitching"
+      surface: "Superior polyurethane over a resilient foam layer"
+      bladder: null
+      certification: null
+      materials: "Polyurethane over syntactic foam"
+      weight: null
+      size: 5
+    notes: >
+      First Champions League ball built on the Roteiro structure
+      introduced at Euro 2004, marketed as Power Balance Technology.
+      This is the season thermal bonding replaced stitching in the
+      competition. Retailed around $140.
+    image:
+      file: "img/balls/2004-05-finale-4.jpg"
+      width: 1024
+      height: 683
+      source_url: "https://www.flickr.com/photos/ykyeco/8061666955/"
+      source_max: "1024px — collector photograph, no product shot at higher resolution located"
+      credit: "ykyeco (Flickr)"
+    sources:
+      - "https://football-balls.com/ball-details/adidas-finale-4-official-match-ball-of-champions-league-2004-2005"
+      - "https://soccerballworld.com/official-uefa-champions-league-balls/"
+      - "https://en.wikipedia.org/wiki/Adidas_Finale"
+    confidence: medium
+
+  - id: 2004-05-finale-istanbul
+    season: "2004/05"
+    year: 2005
+    name: "adidas Finale Istanbul"
+    variant: final
+    manufacturer: adidas
+    model_code: null
+    released: "2005"
+    used_for: "The final only"
+    final:
+      date: "2005-05-25"
+      venue: "Atatürk Olympic Stadium, Istanbul"
+      match: "Liverpool 3–3 AC Milan (Liverpool won 3–2 on penalties)"
+    design:
+      colorway: "White / Blue / Silver"
+      motif: >
+        White base with blue and silver stars, a small Istanbul mark,
+        and both finalists' names printed on the ball.
+      story: >
+        The ball of the Miracle of Istanbul — Liverpool three down at
+        half time, level within six second-half minutes, then champions
+        on penalties.
+    tech:
+      panels: 32
+      construction: "Thermally bonded — no hand stitching"
+      surface: "Superior polyurethane over a resilient foam layer"
+      bladder: null
+      certification: null
+      materials: "Polyurethane"
+      weight: null
+      size: 5
+    notes: >
+      Same structure as the Finale 4, redressed for the occasion.
+      Printing the host city and both finalists on the final ball
+      became the template every subsequent final ball has followed.
+    image:
+      file: "img/balls/2004-05-finale-istanbul.jpg"
+      width: 1024
+      height: 683
+      source_url: "https://www.flickr.com/photos/ykyeco/8061665774/"
+      source_max: "1024px — collector photograph of a match-used ball bearing the AC Milan v Liverpool imprint"
+      credit: "ykyeco (Flickr)"
+    sources:
+      - "https://football-balls.com/ball-details/adidas-finale-istanbul-official-final-match-ball-of-champions-league-2004-2005"
+      - "https://www.soccerbible.com/performance/football-equipment/2018/adidas-ucl-finale-ball-retrospect/"
+    confidence: medium
+
+  # ----------------------------------------------------------
+  # 1998/99 — the sparse end of the archive
+  # ----------------------------------------------------------
+
+  - id: 1998-99-nike-nk-800-geo
+    season: "1998/99"
+    year: 1999
+    name: "Nike NK 800 Geo"
+    variant: league-phase
+    manufacturer: Nike
+    model_code: null
+    released: "1998"
+    used_for: "Entire competition, including the final"
+    final:
+      date: "1999-05-26"
+      venue: "Camp Nou, Barcelona"
+      match: "Manchester United 2–1 Bayern Munich"
+    design:
+      colorway: "White / Black"
+      motif: >
+        White ball with a large swoosh spanning two adjacent hexagons,
+        the Champions League mark on the pentagon above it, and
+        five-pointed stars scattered across the whole surface.
+      story: >
+        The star motif already reads as Champions League three years
+        before adidas made the starball its own — the pattern comes
+        from the competition logo, not from the ball maker.
+    tech:
+      panels: 32
+      construction: "Hand-stitched"
+      surface: null
+      bladder: null
+      certification: null
+      materials: null
+      weight: null
+      size: 5
+    notes: >
+      One ball for the whole season: no separate final edition existed
+      yet. It was on the pitch for the Manchester United treble final,
+      two injury-time goals in Barcelona. The same ball served
+      1999/2000, and Nike also used the NK 800 Geo in La Liga.
+    image:
+      file: "img/balls/1998-99-nike-nk-800-geo.png"
+      width: 860
+      height: 860
+      source_url: "https://football-balls.com/ball-details/nike-nk-800-geo-official-match-ball-of-champions-league-1998-1999"
+      source_max: "860x860 — best located; this era predates online product photography"
+      credit: "Football Balls Database"
+    sources:
+      - "https://football-balls.com/ball-details/nike-nk-800-geo-official-match-ball-of-champions-league-1998-1999"
+      - "https://alchetron.com/1999-UEFA-Champions-League-Final"
+      - "https://www.nss-sports.com/en/lifestyle/27818/balls-nike-champions-league"
+    confidence: medium

@@ -2,38 +2,63 @@
    CL BALL ARCHIVE — styles
    ------------------------------------------------------------
    Reference-article layout: sticky contents sidebar + article
-   column. Football is evoked with CSS-only motifs (pitch
-   markings, ball panel geometry, mown-grass stripes) so the
-   page stays light and text-first.
+   column. Football is evoked with near-CSS-only motifs (pitch
+   markings, a star-panel ball, mown-grass stripes) so the page
+   stays light and text-first.
+
+   Palette — the competition's own colours, on white. Navy ink,
+   royal blue for anything interactive, sky blue for the accents
+   (rules, badges, the mount line). Royal holds 9.2:1 on white so
+   it carries body-size text; sky only reaches 3.2:1, so it is
+   restricted to rules, borders and fills — never any text. The
+   two blues never touch: royal is always type, sky always a
+   line or a fill.
+
+   Type — one family, Geist, doubled by Geist Mono for the
+   micro-labels. There is no display face: hierarchy comes from
+   weight and tracking alone, which keeps the page to two
+   variable font files.
    ============================================================ */
 
 :root {
-  /* ---- ink & paper ---- */
-  --paper: #fbfaf7;
-  --paper-alt: #f2f1ea;
+  /* ---- ink & paper ----
+     The page is plain white, so cards carry no fill of their own:
+     a rule is what makes them read. The tinted wash is reserved
+     for the bands that have to recede (footer, image mounts). */
+  --paper: #ffffff;
+  --paper-alt: #eef2fd;
   --surface: #ffffff;
-  --ink: #15171c;
-  --ink-soft: #565b66;
-  --ink-faint: #8a8e98;
-  --rule: #dcd9d0;
-  --rule-firm: #15171c;
+  --ink: #0a1240;
+  --ink-soft: #4b5480;
+  --ink-faint: #7f88b0;
+  --rule: #dde3f6;
+  --rule-firm: #0a1240;
 
   /* ---- accents ---- */
-  --blue: #1226ee;        /* competition blue: links, active state */
-  --blue-deep: #0b1690;   /* same hue, safe under large type */
-  --pitch: #0d5c3c;       /* pitch green: motifs only, never text */
-  --yellow: #ffd400;      /* highlighted stage badge */
+  --accent: #1b2fc8;       /* royal blue: links, active state (9.2:1 on white) */
+  --accent-deep: #0b1690;  /* same hue, for hover and large type */
+  --accent-tint: #e7ecfe;  /* very light wash, for quiet backgrounds */
+  --sky: #2b96e8;          /* accent: rules, borders and fills, never text */
+  --sky-soft: #d6ecfd;     /* highlighted stage badge: cyan enough to read
+                              as flagged next to the neutral --paper-alt one */
 
-  /* ---- type ---- */
-  --font-display: "Archivo", system-ui, sans-serif;
-  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  /* ---- type ----
+     Two variable files, nothing else. The negative tracking is a
+     variable rather than a repeated literal: six rules rely on
+     it and they have to move together. */
+  --font-display: "Geist", system-ui, -apple-system, sans-serif;
+  --font-body: "Geist", system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --display-weight: 650;
+  --display-track: -0.035em;
+  --display-track-xl: -0.05em;  /* the largest sizes tighten further */
 
   /* ---- metrics ---- */
-  --measure: 68ch;        /* comfortable reading width */
+  --measure: 66ch;
   --max-w: 1240px;
   --sidebar: 250px;
-  --header-h: 56px;
+  --header-h: 60px;
   --gutter: 1.5rem;
 }
 
@@ -45,7 +70,6 @@
 
 html {
   scroll-behavior: smooth;
-  /* keep anchored headings clear of the sticky header */
   scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
@@ -54,7 +78,10 @@ body {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1.0625rem;
-  line-height: 1.65;
+  /* Roomier leading than a default: the sans needs the air and
+     the column reads better for it. */
+  line-height: 1.7;
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -71,11 +98,15 @@ body {
 
 img { display: block; width: 100%; height: auto; }
 
-a { color: var(--blue); text-underline-offset: 0.15em; }
-a:hover { text-decoration-thickness: 2px; }
+a {
+  color: var(--accent);
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+a:hover { color: var(--accent-deep); text-decoration-thickness: 2px; }
 
 :focus-visible {
-  outline: 3px solid var(--blue);
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -99,14 +130,19 @@ a:hover { text-decoration-thickness: 2px; }
 .to-top a {
   font-family: var(--font-mono);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
+  font-weight: 500;
 }
 
-/* Display type: condensed-ish heavy Archivo. */
+/* Headings: tight negative tracking. The whole rhythm of the
+   page rests on that contrast — headings pulled in, labels
+   spread out. */
 h1, h2, h3, h4, .brand, .season__year {
   font-family: var(--font-display);
-  font-weight: 800;
-  line-height: 1.1;
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-track);
+  font-optical-sizing: auto;
+  line-height: 1.08;
   text-wrap: balance;
 }
 
@@ -118,11 +154,11 @@ h1, h2, h3, h4, .brand, .season__year {
   top: -3rem;
   z-index: 60;
   background: var(--ink);
-  color: #fff;
+  color: var(--paper);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   padding: 0.6rem 1rem;
   transition: top 120ms ease;
 }
@@ -131,15 +167,15 @@ h1, h2, h3, h4, .brand, .season__year {
 .loading {
   padding: 6rem var(--gutter);
   text-align: center;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--ink-soft);
 }
 
 /* Hexagon: one facet of a 32-panel ball. Used as a marker glyph. */
 .hex {
   display: inline-block;
-  width: 0.62em;
-  height: 0.72em;
+  width: 0.58em;
+  height: 0.68em;
   background: currentColor;
   clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
   flex: none;
@@ -152,8 +188,8 @@ h1, h2, h3, h4, .brand, .season__year {
   top: 0;
   z-index: 30;
   height: var(--header-h);
-  background: color-mix(in srgb, var(--paper) 88%, transparent);
-  backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--paper) 86%, transparent);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--rule);
 }
 
@@ -167,24 +203,22 @@ h1, h2, h3, h4, .brand, .season__year {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
   font-size: 0.95rem;
-  font-weight: 900;
-  font-stretch: 108%;
-  letter-spacing: 0.01em;
+  /* Uppercase at this size: the headings' negative tracking would
+     hurt legibility, so it goes positive again. */
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   text-decoration: none;
   color: var(--ink);
   white-space: nowrap;
 }
-.brand .hex { color: var(--blue); }
+.brand .hex { color: var(--sky); }
 
 .site-nav {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.6rem;
   margin-left: auto;
-  /* Below 720px this becomes a scrollable strip rather than
-     disappearing — the previous design left mobile with no nav. */
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -192,16 +226,17 @@ h1, h2, h3, h4, .brand, .season__year {
 .site-nav::-webkit-scrollbar { display: none; }
 
 .site-nav a {
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   color: var(--ink-soft);
   text-decoration: none;
   padding: 0.35rem 0;
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
   white-space: nowrap;
+  transition: color 120ms ease, border-color 120ms ease;
 }
 .site-nav a:hover,
 .site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--rule-firm); }
-.site-nav a.active { color: var(--blue); border-bottom-color: var(--blue); }
+.site-nav a.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* ---------- masthead ---------- */
 
@@ -209,20 +244,23 @@ h1, h2, h3, h4, .brand, .season__year {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--rule);
-  padding: 3.5rem 0 3rem;
+  padding: 4.5rem 0 3.75rem;
 }
 
-/* Pitch markings, drawn in CSS: halfway line, centre circle,
-   centre spot. Decorative only, hence pseudo-elements. */
+/* Pitch marking: the halfway line. Decorative only, hence a
+   pseudo-element. */
 .masthead::before {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
   right: clamp(60px, 16vw, 240px);
-  border-left: 1px solid var(--rule);
+  border-left: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
   pointer-events: none;
 }
+/* Where the centre circle used to be: the star-panel ball, sitting on
+   the halfway line as a watermark. Faint on purpose — the infobox
+   overlaps it, so it reads as texture behind the page, not as a figure. */
 .masthead::after {
   content: "";
   position: absolute;
@@ -231,9 +269,8 @@ h1, h2, h3, h4, .brand, .season__year {
   width: clamp(220px, 30vw, 380px);
   aspect-ratio: 1;
   transform: translate(50%, -50%);
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--rule) 0 3px, transparent 3px);
+  background: url("img/ball-star-line.svg") center / contain no-repeat;
+  opacity: 0.22;
   pointer-events: none;
 }
 
@@ -242,17 +279,17 @@ h1, h2, h3, h4, .brand, .season__year {
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  gap: 3rem;
+  gap: 3.5rem;
   align-items: start;
 }
 
 .eyebrow {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.68rem;
-  color: var(--blue);
-  margin-bottom: 1.1rem;
+  gap: 0.7rem;
+  font-size: 0.64rem;
+  color: var(--accent);
+  margin-bottom: 1.4rem;
 }
 .eyebrow::after {
   content: "";
@@ -262,20 +299,25 @@ h1, h2, h3, h4, .brand, .season__year {
 }
 
 .masthead h1 {
-  font-weight: 900;
-  font-stretch: 112%;
+  font-size: clamp(2.5rem, 6.4vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: var(--display-track-xl);
   text-transform: uppercase;
-  font-size: clamp(2.3rem, 5.5vw, 4rem);
-  line-height: 0.94;
-  letter-spacing: -0.015em;
 }
-.masthead h1 .accent { display: block; color: var(--blue); }
+/* Second line of the title: same size, light weight, blue.
+   The heavy/light contrast is doing the work an italic would
+   normally do — and Geist ships no italic. */
+.masthead h1 .accent {
+  display: block;
+  color: var(--accent);
+  font-weight: 300;
+}
 
 .lede {
-  margin-top: 1.4rem;
-  max-width: 54ch;
-  font-size: 1.15rem;
-  line-height: 1.6;
+  margin-top: 1.6rem;
+  max-width: 52ch;
+  font-size: 1.14rem;
+  line-height: 1.65;
   color: var(--ink-soft);
 }
 
@@ -283,13 +325,13 @@ h1, h2, h3, h4, .brand, .season__year {
 
 .infobox {
   background: var(--surface);
-  border: 1px solid var(--rule-firm);
-  border-top-width: 4px;
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--sky);
 }
 
 .infobox__title {
-  font-size: 0.68rem;
-  padding: 0.7rem 1rem;
+  font-size: 0.64rem;
+  padding: 0.8rem 1.1rem;
   border-bottom: 1px solid var(--rule);
   color: var(--ink);
 }
@@ -301,7 +343,7 @@ h1, h2, h3, h4, .brand, .season__year {
 }
 .infobox dt,
 .infobox dd {
-  padding: 0.55rem 1rem;
+  padding: 0.6rem 1.1rem;
   border-top: 1px solid var(--rule);
 }
 .infobox dt:first-of-type,
@@ -309,7 +351,7 @@ h1, h2, h3, h4, .brand, .season__year {
 .infobox dt { color: var(--ink-soft); }
 .infobox dd {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   text-align: right;
   white-space: nowrap;
@@ -320,9 +362,9 @@ h1, h2, h3, h4, .brand, .season__year {
 .layout {
   display: grid;
   grid-template-columns: var(--sidebar) minmax(0, 1fr);
-  gap: 3.5rem;
+  gap: 4rem;
   align-items: start;
-  padding-block: 3rem 4rem;
+  padding-block: 3.5rem 4.5rem;
 }
 
 /* ---------- table of contents ---------- */
@@ -333,7 +375,7 @@ h1, h2, h3, h4, .brand, .season__year {
   max-height: calc(100vh - var(--header-h) - 3.5rem);
   overflow-y: auto;
   padding-right: 0.5rem;
-  border-left: 2px solid var(--rule);
+  border-left: 1px solid var(--rule);
 }
 
 .toc__head {
@@ -341,24 +383,24 @@ h1, h2, h3, h4, .brand, .season__year {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0 0 0.75rem 1rem;
+  padding: 0 0 0.85rem 1rem;
 }
 
 .toc__title {
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   color: var(--ink-faint);
 }
 
 .toc__toggle {
   display: none; /* mobile only */
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   background: none;
   border: 1px solid var(--rule-firm);
   color: var(--ink);
-  padding: 0.3rem 0.6rem;
+  padding: 0.32rem 0.65rem;
   cursor: pointer;
 }
 
@@ -371,39 +413,40 @@ h1, h2, h3, h4, .brand, .season__year {
 
 .toc__list a {
   display: flex;
-  gap: 0.55rem;
-  padding: 0.3rem 0 0.3rem 1rem;
-  margin-left: -2px;
-  border-left: 2px solid transparent;
+  gap: 0.6rem;
+  padding: 0.34rem 0 0.34rem 1rem;
+  margin-left: -1px;
+  border-left: 1px solid transparent;
   font-family: var(--font-body);
-  font-size: 0.88rem;
-  line-height: 1.35;
+  font-size: 0.86rem;
+  line-height: 1.4;
   color: var(--ink-soft);
   text-decoration: none;
+  transition: color 120ms ease, background-color 120ms ease;
 }
 .toc__list a::before {
   content: counters(toc, ".");
   flex: none;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: var(--ink-faint);
-  padding-top: 0.1em;
+  padding-top: 0.2em;
 }
-.toc__list a:hover { color: var(--ink); background: var(--paper-alt); }
+.toc__list a:hover { color: var(--ink); background: var(--accent-tint); }
 
 /* Scroll-spy state, set from app.js */
 .toc__list a[aria-current="true"] {
-  color: var(--blue);
-  border-left-color: var(--blue);
+  color: var(--accent);
+  border-left-color: var(--accent);
   font-weight: 600;
 }
-.toc__list a[aria-current="true"]::before { color: var(--blue); }
+.toc__list a[aria-current="true"]::before { color: var(--accent); }
 
 .toc__sublist {
   list-style: none;
   counter-reset: toc;
 }
-.toc__sublist a { padding-left: 2rem; font-size: 0.82rem; }
+.toc__sublist a { padding-left: 2rem; font-size: 0.81rem; }
 
 /* ---------- article ---------- */
 
@@ -415,23 +458,20 @@ h1, h2, h3, h4, .brand, .season__year {
   display: flex;
   align-items: baseline;
   gap: 1rem;
-  margin: 3.5rem 0 1.25rem;
-  padding-bottom: 0.7rem;
-  /* touchline: a firm rule doubled by a hairline */
-  border-bottom: 2px solid var(--rule-firm);
-  box-shadow: 0 3px 0 -1px var(--rule);
+  margin: 4rem 0 1.4rem;
+  padding-bottom: 0.8rem;
+  /* Touchline: a firm rule doubled by a sky-blue hairline. */
+  border-bottom: 1px solid var(--rule-firm);
+  box-shadow: 0 3px 0 -1px var(--sky);
 }
 
 .era__title {
   display: flex;
   align-items: baseline;
-  gap: 0.6rem;
-  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
-  font-stretch: 105%;
-  text-transform: uppercase;
-  letter-spacing: 0.005em;
+  gap: 0.7rem;
+  font-size: clamp(1.5rem, 2.9vw, 2.05rem);
 }
-.era__title .hex { color: var(--blue); align-self: center; }
+.era__title .hex { color: var(--sky); align-self: center; }
 
 /* Era context reads as a standfirst: same weight as body copy but
    darker and a step larger than the ball descriptions below it. */
@@ -445,7 +485,7 @@ h1, h2, h3, h4, .brand, .season__year {
 
 .permalink {
   font-family: var(--font-mono);
-  font-size: 0.75em;
+  font-size: 0.7em;
   font-weight: 400;
   text-decoration: none;
   color: var(--ink-faint);
@@ -455,20 +495,22 @@ h1, h2, h3, h4, .brand, .season__year {
 .era__head:hover .permalink,
 .season__title:hover .permalink,
 .permalink:focus-visible { opacity: 1; }
-.permalink:hover { color: var(--blue); }
+.permalink:hover { color: var(--accent); }
 
 /* ---------- featured ball (hero-layout eras) ---------- */
 
 .featured {
   display: grid;
   grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
-  gap: 1.5rem;
+  gap: 1.75rem;
   align-items: center;
-  margin-top: 1.75rem;
-  padding: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.75rem;
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-left: 4px solid var(--blue);
+  /* The rule sits on top rather than down the side: less insistent,
+     closer to a printed spec sheet. */
+  border-top: 3px solid var(--accent);
 }
 
 .featured__media { background: var(--paper-alt); border: 1px solid var(--rule); }
@@ -476,24 +518,24 @@ h1, h2, h3, h4, .brand, .season__year {
 
 .featured__label {
   display: block;
-  font-size: 0.64rem;
-  color: var(--blue);
-  margin-bottom: 0.5rem;
+  font-size: 0.6rem;
+  color: var(--accent);
+  margin-bottom: 0.7rem;
 }
 .featured__name {
   display: block;
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.3rem;
-  text-transform: uppercase;
-  line-height: 1.15;
+  font-weight: var(--display-weight);
+  letter-spacing: var(--display-track);
+  font-size: 1.6rem;
+  line-height: 1.1;
 }
 .featured__sub {
   display: block;
-  margin-top: 0.35rem;
+  margin-top: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
@@ -501,27 +543,26 @@ h1, h2, h3, h4, .brand, .season__year {
 /* ---------- season sections ---------- */
 
 .season {
-  margin-top: 2.75rem;
+  margin-top: 3rem;
   scroll-margin-top: calc(var(--header-h) + 1rem);
 }
 
 .season__title {
   display: flex;
   align-items: baseline;
-  gap: 0.9rem;
-  padding-bottom: 0.5rem;
+  gap: 1rem;
+  padding-bottom: 0.55rem;
   border-bottom: 1px solid var(--rule);
 }
 
 .season__year {
-  font-size: clamp(1.6rem, 4vw, 2.3rem);
-  font-weight: 900;
-  font-stretch: 118%;
-  letter-spacing: -0.01em;
+  font-size: clamp(1.8rem, 4.2vw, 2.7rem);
+  letter-spacing: var(--display-track-xl);
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .season__count {
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   color: var(--ink-faint);
   font-weight: 400;
 }
@@ -531,21 +572,19 @@ h1, h2, h3, h4, .brand, .season__year {
 .ball-list { list-style: none; }
 
 .ball-list > li + li {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--rule);
 }
-.ball-list > li:first-child { margin-top: 1.5rem; }
+.ball-list > li:first-child { margin-top: 1.75rem; }
 
 .ball {
   display: grid;
   grid-template-columns: 148px minmax(0, 1fr);
-  gap: 1.5rem;
+  gap: 1.75rem;
   align-items: start;
 }
 
-/* Images document the subject, so they stay — but contained,
-   never the dominant element. */
 .ball__figure {
   background: var(--paper-alt);
   border: 1px solid var(--rule);
@@ -556,28 +595,32 @@ h1, h2, h3, h4, .brand, .season__year {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
+  gap: 0.8rem;
+  margin-bottom: 0.55rem;
 }
 
 .ball__name {
-  font-size: 1.08rem;
-  font-weight: 800;
-  font-stretch: 104%;
-  text-transform: uppercase;
-  letter-spacing: 0.01em;
+  font-size: 1.2rem;
 }
 
-/* Stage badge, cut like a corner-flag pennant. */
+/* Stage badge: tinted fill, hairline border. */
 .badge {
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
+  color: var(--ink-soft);
   background: var(--paper-alt);
-  border: 1px solid var(--rule-firm);
-  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--rule);
+  padding: 0.2rem 0.55rem;
   white-space: nowrap;
 }
-.badge--highlight { background: var(--yellow); }
+/* Pale sky rather than the full-strength accent: same flagging
+   job, none of the fluorescence. The border is what separates it
+   from a plain badge — the two fills are close in value. */
+.badge--highlight {
+  color: var(--ink);
+  background: var(--sky-soft);
+  border-color: var(--sky);
+}
 
 .ball__text {
   max-width: var(--measure);
@@ -585,45 +628,47 @@ h1, h2, h3, h4, .brand, .season__year {
 }
 
 /* Label/value pairs: a definition list scales to any number of
-   specs, unlike the fixed two-column grid it replaces. */
+   specs, unlike a fixed two-column grid. */
 .specs {
   display: grid;
   grid-template-columns: max-content minmax(0, 1fr);
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   border-top: 1px solid var(--rule);
   max-width: 34rem;
 }
 .specs dt,
 .specs dd {
-  padding: 0.4rem 0;
+  padding: 0.45rem 0;
   border-bottom: 1px solid var(--rule);
   font-size: 0.75rem;
 }
 .specs dt {
   color: var(--ink-faint);
   padding-right: 1.5rem;
-  font-size: 0.65rem;
-  padding-top: 0.52rem;
+  font-size: 0.6rem;
+  padding-top: 0.58rem;
 }
 .specs dd {
   font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 /* ---------- technical summary ---------- */
 
 .summary-section {
-  margin-top: 4rem;
-  padding: 2rem;
+  margin-top: 4.5rem;
+  padding: 2.25rem;
   background: var(--surface);
-  border: 1px solid var(--rule-firm);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--ink);
   scroll-margin-top: calc(var(--header-h) + 1rem);
   /* Mown-grass stripes. Kept very faint and wide: any stronger and
      the bands show through the text sitting on top of them. */
   background-image: repeating-linear-gradient(
     90deg,
-    color-mix(in srgb, var(--pitch) 3%, transparent) 0 64px,
+    color-mix(in srgb, var(--accent) 3.5%, transparent) 0 64px,
     transparent 64px 128px
   );
 }
@@ -631,51 +676,50 @@ h1, h2, h3, h4, .brand, .season__year {
 .summary-section > h2 {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  padding-bottom: 0.7rem;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid var(--rule-firm);
+  gap: 0.7rem;
+  font-size: 1.32rem;
+  padding-bottom: 0.8rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid var(--rule-firm);
 }
-.summary-section > h2 .hex { color: var(--pitch); }
+.summary-section > h2 .hex { color: var(--sky); }
 
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: 1.75rem;
+  gap: 2rem;
 }
 
 .summary-grid h3 {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--pitch);
-  padding-bottom: 0.4rem;
-  margin-bottom: 0.5rem;
+  /* Royal, not sky: at this size the contrast has to hold. */
+  color: var(--accent);
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.6rem;
   border-bottom: 1px solid var(--rule);
 }
 .summary-grid p { font-size: 0.95rem; color: var(--ink-soft); }
 
 /* ---------- back to top ---------- */
 
-.to-top { margin-top: 1.75rem; text-align: right; }
+.to-top { margin-top: 2rem; text-align: right; }
 .to-top a {
-  font-size: 0.64rem;
+  font-size: 0.6rem;
   color: var(--ink-faint);
   text-decoration: none;
 }
-.to-top a:hover { color: var(--blue); }
+.to-top a:hover { color: var(--accent); }
 
 /* ---------- footer ---------- */
 
 .site-footer {
   border-top: 1px solid var(--rule);
   background: var(--paper-alt);
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   color: var(--ink-soft);
 }
 .site-footer .wrap {
@@ -684,15 +728,16 @@ h1, h2, h3, h4, .brand, .season__year {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 1.5rem;
+  padding-block: 1.75rem;
 }
 .site-footer nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
 .site-footer a { color: inherit; text-decoration: none; }
-.site-footer a:hover { color: var(--blue); text-decoration: underline; }
+.site-footer a:hover { color: var(--accent); text-decoration: underline; }
 .site-footer .brand-small {
   font-family: var(--font-display);
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  font-weight: var(--display-weight);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
   color: var(--ink);
 }
 
@@ -703,11 +748,11 @@ h1, h2, h3, h4, .brand, .season__year {
   margin: 4rem auto;
   padding: 1.5rem;
   background: var(--surface);
-  border: 1px solid var(--rule-firm);
-  border-left: 4px solid var(--blue);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
   font-size: 0.9rem;
 }
-.load-error strong { color: var(--blue); }
+.load-error strong { color: var(--accent); }
 .load-error code {
   font-family: var(--font-mono);
   font-size: 0.85em;
@@ -716,10 +761,259 @@ h1, h2, h3, h4, .brand, .season__year {
 }
 
 /* ============================================================
+   IMAGE ZOOM
+   ------------------------------------------------------------
+   Colours here are literal rather than tokens: the viewer is a
+   dark surface floating over the page, so it does not belong to
+   the white/blue scale the rest of the sheet works in.
+   ============================================================ */
+
+/* ---------- trigger ---------- */
+
+.zoomable {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.zoomable__badge {
+  position: absolute;
+  right: 0.4rem;
+  bottom: 0.4rem;
+  display: grid;
+  place-items: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  color: var(--paper);
+  background: rgb(20 24 29 / 82%);
+  opacity: 0;
+  transform: translateY(0.25rem);
+  transition: opacity 140ms ease, transform 140ms ease;
+  pointer-events: none;
+}
+.zoomable:hover .zoomable__badge,
+.zoomable:focus-visible .zoomable__badge {
+  opacity: 1;
+  transform: none;
+}
+
+/* A touch device never hovers, so the affordance has to be
+   permanent there — otherwise the feature is invisible on phones. */
+@media (hover: none) {
+  .zoomable__badge { opacity: 1; transform: none; }
+}
+
+/* ---------- viewer ---------- */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  background: rgb(6 10 40 / 95%);
+  overscroll-behavior: contain;
+}
+/* display:flex would otherwise win over the [hidden] UA rule. */
+.viewer[hidden] { display: none; }
+
+.viewer :focus-visible { outline-color: #fff; }
+
+.viewer__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  /* Hands every gesture to the script: without this the browser
+     claims the pinch and scrolls the page underneath instead. */
+  touch-action: none;
+  cursor: zoom-in;
+}
+.viewer__stage.is-zoomed { cursor: grab; }
+.viewer__stage.is-panning { cursor: grabbing; }
+
+.viewer__img {
+  /* Absolute centring, not grid centring. As a grid item, a tall
+     photo's `max-height: 100%` resolves against a row that is itself
+     sized by that photo, so the constraint is dropped, the row grows
+     and the picture ends up hanging out of the bottom of the stage.
+     Against a positioned ancestor the percentage always has a
+     definite height to resolve against, and `margin: auto` centres
+     on both axes whatever the aspect ratio. */
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  /* width/height override the global img rule, which would
+     otherwise stretch the image to the stage. */
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* The photograph is mounted like a print: a white mat, a sky-blue
+   line at its edge, a soft shadow underneath. The mat is what makes
+   the frame read — a hairline alone disappears against a large pale
+   photo on a dark ground.
+
+   Drawn as its own layer rather than as a border on the image: a
+   border would be scaled by the zoom transform and thicken with it.
+   app.js sizes it around the photo's rectangle and sets --mat. */
+.viewer__frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: var(--surface);
+  border: 1px solid var(--sky);
+  box-shadow: 0 22px 60px rgb(0 0 0 / 55%);
+  pointer-events: none;
+}
+
+/* Hairline where the mat meets the photograph. Most of the ball
+   shots are on a white ground and would bleed into the mount
+   without it. */
+.viewer__frame::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--mat, 16px) - 1px);
+  border: 1px solid var(--rule);
+}
+
+/* In the toolbar rather than floating over the stage: anywhere on
+   the stage it would sit on the mount like a sticker, and it would
+   have to fight whatever tone the photograph happens to be. */
+.viewer__hint {
+  grid-column: 2;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-align: center;
+  /* Bright: these are the instructions, and a dim pill on a dark bar
+     is exactly what a first-time visitor fails to notice. */
+  color: rgb(255 255 255 / 92%);
+  border: 1px solid rgb(255 255 255 / 30%);
+  transition: opacity 200ms ease;
+  pointer-events: none;
+}
+/* Says its piece once, then gets out of the way for good. */
+.viewer.has-zoomed .viewer__hint { opacity: 0; }
+
+.viewer__bar {
+  display: grid;
+  /* Equal side columns, so the instructions sit centred on the bar
+     itself rather than in whatever space the controls leave over.
+     Absolute centring would have been simpler but overlaps the
+     buttons around 720px. */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.7rem clamp(0.75rem, 3vw, 1.5rem);
+  background: rgb(20 24 29 / 96%);
+  border-top: 1px solid rgb(255 255 255 / 12%);
+}
+
+/* The edition gets a band of its own above the picture. Opened from
+   a thumbnail the viewer is cut off from the year heading that sits
+   above the entry, so it has to say for itself which ball this is. */
+.viewer__head {
+  display: flex;
+  justify-content: center;
+  padding: 0.85rem 1rem;
+  background: rgb(20 24 29 / 96%);
+  border-bottom: 1px solid rgb(255 255 255 / 12%);
+}
+.viewer__head[hidden] { display: none; }
+
+.viewer__edition {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  /* Sky, but lifted well above the page token: #2b96e8 only
+     reaches 6:1 on this navy band, a shade under the mark. This
+     one clears 12:1. */
+  color: #9fd8ff;
+}
+
+.viewer__tools {
+  grid-column: 3;
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.viewer__btn {
+  min-width: 2.75rem;   /* 44px: the smallest comfortable tap target */
+  min-height: 2.75rem;
+  padding-inline: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.viewer__btn:hover { background: rgb(255 255 255 / 16%); }
+.viewer__btn--strong { background: var(--accent); border-color: var(--accent); }
+.viewer__btn--strong:hover { background: var(--accent-deep); }
+
+/* The zoom range depends on the resolution of the photo on screen,
+   so + and − switch off at the ends rather than going quietly dead. */
+.viewer__btn[disabled] {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.viewer__btn[disabled]:hover { background: rgb(255 255 255 / 8%); }
+
+.viewer__level {
+  min-width: 5.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: rgb(255 255 255 / 72%);
+}
+
+/* Paired with the position:fixed lock in app.js. */
+body.is-locked {
+  position: fixed;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
-/* Contents column folds under the masthead. */
+/* Below this the controls need more than a third of the bar, so the
+   side columns stop being equal and the instructions drift off
+   centre. Stack instead: both rows centred, nothing overlapping,
+   and the instructions stay on screen rather than being dropped. */
+@media (max-width: 1040px) {
+  .viewer__bar { grid-template-columns: minmax(0, 1fr); }
+  .viewer__hint { grid-column: 1; justify-self: center; }
+  .viewer__tools { grid-column: 1; justify-self: center; }
+}
+
 @media (max-width: 940px) {
   .layout {
     grid-template-columns: minmax(0, 1fr);
@@ -732,7 +1026,7 @@ h1, h2, h3, h4, .brand, .season__year {
     max-height: none;
     overflow: visible;
     border-left: 0;
-    border: 1px solid var(--rule-firm);
+    border: 1px solid var(--rule);
     background: var(--surface);
     padding: 0.5rem 0;
   }
@@ -750,24 +1044,48 @@ h1, h2, h3, h4, .brand, .season__year {
 @media (max-width: 720px) {
   :root { --gutter: 1.125rem; }
 
-  .masthead { padding: 2.5rem 0 2.25rem; }
-  .masthead::before,
-  .masthead::after { opacity: 0.6; }
+  .masthead { padding: 3rem 0 2.5rem; }
+  .masthead::before { opacity: 0.6; }
+  /* Single column here, so the ball sits straight behind the title —
+     pull it back further than the line. */
+  .masthead::after { opacity: 0.13; }
 
-  .featured { grid-template-columns: minmax(0, 1fr); padding: 1.125rem; }
+  .featured { grid-template-columns: minmax(0, 1fr); padding: 1.25rem; }
   .featured__media { max-width: 15rem; }
 
   .era__head { flex-wrap: wrap; gap: 0.5rem; }
 }
 
-/* Ball entry stacks: thumbnail above the text. */
 @media (max-width: 560px) {
   .ball { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
   .ball__figure { max-width: 10rem; }
   .specs { grid-template-columns: minmax(0, 1fr); }
   .specs dt { border-bottom: 0; padding-bottom: 0; }
   .specs dd { padding-top: 0.1rem; }
-  .summary-section { padding: 1.25rem; }
+  .summary-section { padding: 1.35rem; }
+
+  /* One column: the controls take the whole width and stay
+     thumb-sized instead of being squeezed into a third of the bar. */
+  .viewer__bar { grid-template-columns: minmax(0, 1fr); gap: 0.6rem; }
+  /* Still the largest thing in the chrome, but "2026 · SPECIAL
+     EDITION" has to clear a 500px screen on one line. */
+  .viewer__edition { font-size: 0.72rem; letter-spacing: 0.12em; }
+  /* No room for the hint beside the controls; the gestures it
+     describes are the ones a phone does by reflex anyway. */
+  .viewer__hint { display: none; }
+  .viewer__tools {
+    grid-column: 1;
+    justify-self: stretch;
+    justify-content: space-between;
+  }
+  .viewer__btn { flex: 1; padding-inline: 0.4rem; }
+  .viewer__level { flex: 0 0 auto; min-width: 4.5rem; }
+}
+
+/* A phone in landscape has very little height to give the stage. */
+@media (max-height: 480px) {
+  .viewer__hint { display: none; }
+  .viewer__btn { min-height: 2.4rem; }
 }
 
 /* ============================================================
@@ -775,12 +1093,16 @@ h1, h2, h3, h4, .brand, .season__year {
    ============================================================ */
 
 @media print {
-  :root { --paper: #fff; --ink-soft: #333; }
+  /* The page is already white; only the secondary ink drops its
+     hue, which no printer renders faithfully at this size. */
+  :root { --ink-soft: #333; }
   .site-header,
   .toc,
   .to-top,
   .skip-link,
   .site-nav,
+  .viewer,
+  .zoomable__badge,
   .permalink { display: none !important; }
   .masthead::before,
   .masthead::after { display: none; }

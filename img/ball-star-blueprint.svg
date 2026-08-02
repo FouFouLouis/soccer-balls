@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="bb-t">
+  <title id="bb-t">Ballon de football à panneaux étoilés, tracé de construction</title>
+  <defs>
+    <clipPath id="bb-clip"><circle cx="128" cy="128" r="100" /></clipPath>
+  </defs>
+  <circle cx="128" cy="128" r="113" fill="none" stroke="#1b2fc8"
+          stroke-width="1" stroke-dasharray="1.5 7" opacity="0.4" />
+  <g fill="none" stroke="#1b2fc8">
+    <g clip-path="url(#bb-clip)" opacity="0.3" stroke-width="1.2">
+      <ellipse cx="128" cy="128" rx="37.461" ry="100" />
+      <ellipse cx="128" cy="128" rx="82.904" ry="100" />
+      <ellipse cx="128" cy="128" rx="100" ry="100" />
+      <ellipse cx="128" cy="194.913" rx="74.314" ry="17.835" />
+      <ellipse cx="128" cy="128" rx="100" ry="24" />
+      <ellipse cx="128" cy="61.087" rx="74.314" ry="17.835" />
+    </g>
+    <circle cx="128" cy="128" r="100" stroke-width="2.6" />
+    <g stroke-width="2.6" stroke-linejoin="round">
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(128 128) rotate(0) scale(1 1) rotate(0)" fill="#1b2fc8" />
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(128 206.801) rotate(90) scale(0.616 1) rotate(-90)" />
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(202.944 152.351) rotate(18) scale(0.616 1) rotate(-18)" />
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(174.318 64.249) rotate(-54) scale(0.616 1) rotate(54)" />
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(81.682 64.249) rotate(-126) scale(0.616 1) rotate(126)" />
+      <path d="M0,-31L8.382,-11.537L29.483,-9.58L13.562,4.407L18.221,25.08L0,14.26L-18.221,25.08L-13.562,4.407L-29.483,-9.58L-8.382,-11.537Z" transform="translate(53.056 152.351) rotate(162) scale(0.616 1) rotate(-162)" />
+    </g>
+  </g>
+</svg>
