@@ -1,384 +1,682 @@
 /* ============================================================
    CL BALL ARCHIVE — styles
+   ------------------------------------------------------------
+   Reference-article layout: sticky contents sidebar + article
+   column. Football is evoked with CSS-only motifs (pitch
+   markings, ball panel geometry, mown-grass stripes) so the
+   page stays light and text-first.
    ============================================================ */
 
 :root {
-  --ink: #0a0a0a;
-  --paper: #f4f4f2;
-  --card: #ffffff;
-  --blue: #1226ee;
-  --yellow: #ffd400;
-  --grey-badge: #e4e4e0;
-  --line: #0a0a0a;
-  --muted: #55555a;
+  /* ---- ink & paper ---- */
+  --paper: #fbfaf7;
+  --paper-alt: #f2f1ea;
+  --surface: #ffffff;
+  --ink: #15171c;
+  --ink-soft: #565b66;
+  --ink-faint: #8a8e98;
+  --rule: #dcd9d0;
+  --rule-firm: #15171c;
 
+  /* ---- accents ---- */
+  --blue: #1226ee;        /* competition blue: links, active state */
+  --blue-deep: #0b1690;   /* same hue, safe under large type */
+  --pitch: #0d5c3c;       /* pitch green: motifs only, never text */
+  --yellow: #ffd400;      /* highlighted stage badge */
+
+  /* ---- type ---- */
   --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: "Space Mono", ui-monospace, monospace;
 
-  --border: 2px solid var(--line);
-  --shadow: 6px 6px 0 var(--ink);
-  --max-w: 1200px;
+  /* ---- metrics ---- */
+  --measure: 68ch;        /* comfortable reading width */
+  --max-w: 1240px;
+  --sidebar: 250px;
+  --header-h: 56px;
+  --gutter: 1.5rem;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  * { animation: none !important; transition: none !important; }
+* { margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  /* keep anchored headings clear of the sticky header */
+  scroll-padding-top: calc(var(--header-h) + 1rem);
 }
 
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 16px;
-  line-height: 1.5;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.loading {
-  font-family: var(--font-mono);
-  padding: 4rem 2rem;
-  text-align: center;
-  letter-spacing: 0.2em;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+img { display: block; width: 100%; height: auto; }
+
+a { color: var(--blue); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 2px;
 }
 
 .wrap {
   max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
 }
 
-a { color: inherit; }
+/* Shared label style: small, mono, tracked-out uppercase. */
+.eyebrow,
+.site-nav a,
+.toc__title,
+.infobox__title,
+.badge,
+.season__count,
+.featured__label,
+.specs dt,
+.site-footer,
+.loading,
+.to-top a {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
 
-img { display: block; width: 100%; height: auto; }
+/* Display type: condensed-ish heavy Archivo. */
+h1, h2, h3, h4, .brand, .season__year {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+/* ---------- utilities ---------- */
+
+.skip-link {
+  position: absolute;
+  left: 0.5rem;
+  top: -3rem;
+  z-index: 60;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.6rem 1rem;
+  transition: top 120ms ease;
+}
+.skip-link:focus { top: 0.5rem; }
+
+.loading {
+  padding: 6rem var(--gutter);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+/* Hexagon: one facet of a 32-panel ball. Used as a marker glyph. */
+.hex {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.72em;
+  background: currentColor;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  flex: none;
+}
 
 /* ---------- header ---------- */
 
 .site-header {
-  border-bottom: var(--border);
-  background: var(--card);
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 30;
+  height: var(--header-h);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
 }
 
 .site-header .wrap {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  height: 64px;
+  gap: 1.5rem;
+  height: 100%;
 }
 
 .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
   font-weight: 900;
-  font-stretch: 110%;
-  letter-spacing: 0.02em;
+  font-stretch: 108%;
+  letter-spacing: 0.01em;
   text-transform: uppercase;
-  color: var(--blue);
-  font-size: 1.05rem;
   text-decoration: none;
+  color: var(--ink);
+  white-space: nowrap;
 }
+.brand .hex { color: var(--blue); }
 
-.site-nav { display: flex; gap: 1.75rem; }
+.site-nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-left: auto;
+  /* Below 720px this becomes a scrollable strip rather than
+     disappearing — the previous design left mobile with no nav. */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.site-nav::-webkit-scrollbar { display: none; }
 
 .site-nav a {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.7rem;
+  color: var(--ink-soft);
   text-decoration: none;
-  padding: 0.25rem 0;
+  padding: 0.35rem 0;
   border-bottom: 2px solid transparent;
+  white-space: nowrap;
 }
 .site-nav a:hover,
-.site-nav a:focus-visible { border-bottom-color: var(--blue); }
-.site-nav a.active { border-bottom-color: var(--blue); color: var(--blue); }
+.site-nav a:focus-visible { color: var(--ink); border-bottom-color: var(--rule-firm); }
+.site-nav a.active { color: var(--blue); border-bottom-color: var(--blue); }
 
-@media (max-width: 720px) {
-  .site-nav { display: none; }
+/* ---------- masthead ---------- */
+
+.masthead {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--rule);
+  padding: 3.5rem 0 3rem;
 }
 
-/* ---------- intro / masthead ---------- */
-
-.masthead { padding: 4rem 0 3rem; }
+/* Pitch markings, drawn in CSS: halfway line, centre circle,
+   centre spot. Decorative only, hence pseudo-elements. */
+.masthead::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: clamp(60px, 16vw, 240px);
+  border-left: 1px solid var(--rule);
+  pointer-events: none;
+}
+.masthead::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: clamp(60px, 16vw, 240px);
+  width: clamp(220px, 30vw, 380px);
+  aspect-ratio: 1;
+  transform: translate(50%, -50%);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--rule) 0 3px, transparent 3px);
+  pointer-events: none;
+}
 
 .masthead .wrap {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  gap: 3rem;
   align-items: start;
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  color: var(--blue);
+  margin-bottom: 1.1rem;
+}
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  max-width: 4rem;
+  border-top: 1px solid currentColor;
 }
 
 .masthead h1 {
   font-weight: 900;
-  font-stretch: 115%;
+  font-stretch: 112%;
   text-transform: uppercase;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.01em;
+  font-size: clamp(2.3rem, 5.5vw, 4rem);
+  line-height: 0.94;
+  letter-spacing: -0.015em;
 }
 .masthead h1 .accent { display: block; color: var(--blue); }
 
-.masthead .intro {
-  margin-top: 1.25rem;
-  max-width: 46ch;
-  font-size: 0.95rem;
-  color: var(--muted);
+.lede {
+  margin-top: 1.4rem;
+  max-width: 54ch;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
 
-.partner-badge {
-  background: var(--yellow);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  padding: 0.75rem 1rem;
+/* ---------- infobox (reference-style quick facts) ---------- */
+
+.infobox {
+  background: var(--surface);
+  border: 1px solid var(--rule-firm);
+  border-top-width: 4px;
+}
+
+.infobox__title {
+  font-size: 0.68rem;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.infobox dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  font-size: 0.85rem;
+}
+.infobox dt,
+.infobox dd {
+  padding: 0.55rem 1rem;
+  border-top: 1px solid var(--rule);
+}
+.infobox dt:first-of-type,
+.infobox dt:first-of-type + dd { border-top: 0; }
+.infobox dt { color: var(--ink-soft); }
+.infobox dd {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-align: right;
   white-space: nowrap;
 }
-.partner-badge strong { display: block; font-size: 0.85rem; }
 
-@media (max-width: 720px) {
-  .masthead .wrap { grid-template-columns: 1fr; }
-  .partner-badge { justify-self: start; text-align: left; }
-}
+/* ---------- layout: contents + article ---------- */
 
-/* ---------- era banner ---------- */
-
-.era-banner {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 3.5rem 0 2rem;
-}
-.era-banner::before,
-.era-banner::after {
-  content: "";
-  flex: 1;
-  border-top: var(--border);
-}
-.era-banner span {
-  border: var(--border);
-  background: var(--ink);
-  color: #fff;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.55rem 1.4rem;
-}
-
-/* ---------- hero era ---------- */
-
-.era-hero {
+.layout {
   display: grid;
-  grid-template-columns: minmax(240px, 320px) 1fr;
-  gap: 2rem;
+  grid-template-columns: var(--sidebar) minmax(0, 1fr);
+  gap: 3.5rem;
   align-items: start;
-}
-@media (max-width: 860px) {
-  .era-hero { grid-template-columns: 1fr; }
+  padding-block: 3rem 4rem;
 }
 
-.context-card {
-  background: var(--card);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  padding: 1.25rem;
-}
-.context-card .kicker {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--blue);
-  border: 2px solid var(--blue);
-  padding: 0.2rem 0.5rem;
-  margin-bottom: 0.9rem;
-}
-.context-card p { font-size: 0.9rem; }
+/* ---------- table of contents ---------- */
 
-.hero-ball {
-  border: var(--border);
-  background: #111;
-  box-shadow: var(--shadow);
-}
-.hero-ball img { aspect-ratio: 16 / 10; object-fit: cover; }
-.hero-ball figcaption {
-  border-top: var(--border);
-  background: var(--ink);
-  color: #fff;
-  padding: 0.9rem 1.2rem;
-}
-.hero-ball .name {
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-.hero-ball .sub {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #b8b8b8;
+.toc {
+  position: sticky;
+  top: calc(var(--header-h) + 1.75rem);
+  max-height: calc(100vh - var(--header-h) - 3.5rem);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  border-left: 2px solid var(--rule);
 }
 
-/* ---------- year sections ---------- */
-
-.year-header {
+.toc__head {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  margin: 3rem 0 1.5rem;
-}
-.year-header::before,
-.year-header::after {
-  content: "";
-  flex: 1;
-  border-top: 1px solid var(--ink);
-}
-.year-header h2 {
-  font-weight: 900;
-  font-stretch: 120%;
-  font-size: clamp(2rem, 4.5vw, 3rem);
-  letter-spacing: 0.02em;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 0 0.75rem 1rem;
 }
 
-/* 1–3 cards, always balanced */
-.ball-grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
-  justify-content: center;
-}
-.ball-grid[data-count="1"] { --cols: 1; max-width: 460px; margin-inline: auto; }
-.ball-grid[data-count="2"] { --cols: 2; max-width: 860px; margin-inline: auto; }
-
-@media (max-width: 960px) {
-  .ball-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .ball-grid[data-count="1"] { grid-template-columns: 1fr; }
-}
-@media (max-width: 620px) {
-  .ball-grid { grid-template-columns: 1fr !important; max-width: 460px; }
+.toc__title {
+  font-size: 0.66rem;
+  color: var(--ink-faint);
 }
 
-/* ---------- ball card ---------- */
-
-.ball-card {
-  background: var(--card);
-  border: var(--border);
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  transition: transform 120ms ease;
-}
-.ball-card:hover { transform: translate(-2px, -2px); }
-
-.ball-card .media {
-  position: relative;
-  background: #202020;
-  border-bottom: var(--border);
-}
-.ball-card .media img { aspect-ratio: 1 / 1; object-fit: cover; }
-
-.stage-badge {
-  position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
+.toc__toggle {
+  display: none; /* mobile only */
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 700;
+  font-size: 0.66rem;
+  text-transform: uppercase;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: var(--grey-badge);
-  border: 2px solid var(--ink);
-  padding: 0.2rem 0.55rem;
+  background: none;
+  border: 1px solid var(--rule-firm);
+  color: var(--ink);
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
 }
-.stage-badge.highlight { background: var(--yellow); }
 
-.ball-card .body { padding: 1.1rem 1.1rem 1.25rem; flex: 1; }
-.ball-card h3 {
-  font-weight: 900;
+/* Wiki-style automatic numbering: 1, 1.1, 1.2 … */
+.toc__list {
+  list-style: none;
+  counter-reset: toc;
+}
+.toc__list li { counter-increment: toc; }
+
+.toc__list a {
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.3rem 0 0.3rem 1rem;
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.toc__list a::before {
+  content: counters(toc, ".");
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  padding-top: 0.1em;
+}
+.toc__list a:hover { color: var(--ink); background: var(--paper-alt); }
+
+/* Scroll-spy state, set from app.js */
+.toc__list a[aria-current="true"] {
+  color: var(--blue);
+  border-left-color: var(--blue);
+  font-weight: 600;
+}
+.toc__list a[aria-current="true"]::before { color: var(--blue); }
+
+.toc__sublist {
+  list-style: none;
+  counter-reset: toc;
+}
+.toc__sublist a { padding-left: 2rem; font-size: 0.82rem; }
+
+/* ---------- article ---------- */
+
+.article > .era:first-child > .era__head { margin-top: 0; }
+
+.era { scroll-margin-top: calc(var(--header-h) + 1rem); }
+
+.era__head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 3.5rem 0 1.25rem;
+  padding-bottom: 0.7rem;
+  /* touchline: a firm rule doubled by a hairline */
+  border-bottom: 2px solid var(--rule-firm);
+  box-shadow: 0 3px 0 -1px var(--rule);
+}
+
+.era__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  font-stretch: 105%;
   text-transform: uppercase;
-  font-size: 1rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.005em;
+}
+.era__title .hex { color: var(--blue); align-self: center; }
+
+/* Era context reads as a standfirst: same weight as body copy but
+   darker and a step larger than the ball descriptions below it. */
+.era__context {
+  max-width: var(--measure);
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+
+/* ---------- permalinks on headings ---------- */
+
+.permalink {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  font-weight: 400;
+  text-decoration: none;
+  color: var(--ink-faint);
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+.era__head:hover .permalink,
+.season__title:hover .permalink,
+.permalink:focus-visible { opacity: 1; }
+.permalink:hover { color: var(--blue); }
+
+/* ---------- featured ball (hero-layout eras) ---------- */
+
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 260px) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--blue);
+}
+
+.featured__media { background: var(--paper-alt); border: 1px solid var(--rule); }
+.featured__media img { aspect-ratio: 4 / 3; object-fit: cover; }
+
+.featured__label {
+  display: block;
+  font-size: 0.64rem;
+  color: var(--blue);
   margin-bottom: 0.5rem;
 }
-.ball-card .body p { font-size: 0.84rem; color: var(--muted); }
-
-.ball-card .specs {
-  border-top: 1px solid var(--ink);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-.ball-card .spec {
-  padding: 0.6rem 1.1rem;
-  font-family: var(--font-mono);
-}
-.ball-card .spec + .spec { border-left: 1px solid var(--ink); }
-.ball-card .spec .label {
+.featured__name {
   display: block;
-  font-size: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.3rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--muted);
+  line-height: 1.15;
 }
-.ball-card .spec .value {
-  font-size: 0.8rem;
+.featured__sub {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ---------- season sections ---------- */
+
+.season {
+  margin-top: 2.75rem;
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+}
+
+.season__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.season__year {
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  font-weight: 900;
+  font-stretch: 118%;
+  letter-spacing: -0.01em;
+}
+
+.season__count {
+  font-size: 0.66rem;
+  color: var(--ink-faint);
+  font-weight: 400;
+}
+
+/* ---------- ball entries ---------- */
+
+.ball-list { list-style: none; }
+
+.ball-list > li + li {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+.ball-list > li:first-child { margin-top: 1.5rem; }
+
+.ball {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* Images document the subject, so they stay — but contained,
+   never the dominant element. */
+.ball__figure {
+  background: var(--paper-alt);
+  border: 1px solid var(--rule);
+}
+.ball__figure img { aspect-ratio: 1; object-fit: cover; }
+
+.ball__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.ball__name {
+  font-size: 1.08rem;
+  font-weight: 800;
+  font-stretch: 104%;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* Stage badge, cut like a corner-flag pennant. */
+.badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  background: var(--paper-alt);
+  border: 1px solid var(--rule-firm);
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+.badge--highlight { background: var(--yellow); }
+
+.ball__text {
+  max-width: var(--measure);
+  color: var(--ink-soft);
+}
+
+/* Label/value pairs: a definition list scales to any number of
+   specs, unlike the fixed two-column grid it replaces. */
+.specs {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  max-width: 34rem;
+}
+.specs dt,
+.specs dd {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.75rem;
+}
+.specs dt {
+  color: var(--ink-faint);
+  padding-right: 1.5rem;
+  font-size: 0.65rem;
+  padding-top: 0.52rem;
+}
+.specs dd {
+  font-family: var(--font-mono);
   font-weight: 700;
   text-transform: uppercase;
 }
 
 /* ---------- technical summary ---------- */
 
-.tech-summary {
-  margin-top: 4.5rem;
-  background: var(--ink);
-  color: #fff;
+.summary-section {
+  margin-top: 4rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--rule-firm);
+  scroll-margin-top: calc(var(--header-h) + 1rem);
+  /* Mown-grass stripes. Kept very faint and wide: any stronger and
+     the bands show through the text sitting on top of them. */
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--pitch) 3%, transparent) 0 64px,
+    transparent 64px 128px
+  );
 }
-.tech-summary .wrap { padding: 3rem 1.5rem; }
-.tech-summary h2 {
-  font-weight: 900;
+
+.summary-section > h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.05rem;
   text-transform: uppercase;
-  font-size: 1.3rem;
-  letter-spacing: 0.04em;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #fff;
-  display: inline-block;
-  padding-bottom: 0.4rem;
+  letter-spacing: 0.02em;
+  padding-bottom: 0.7rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--rule-firm);
 }
-.tech-summary .grid {
+.summary-section > h2 .hex { color: var(--pitch); }
+
+.summary-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.75rem;
 }
-@media (max-width: 860px) {
-  .tech-summary .grid { grid-template-columns: 1fr; }
-}
-.tech-summary h3 {
+
+.summary-grid h3 {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--yellow);
-  margin-bottom: 0.6rem;
+  color: var(--pitch);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
 }
-.tech-summary p { font-size: 0.88rem; color: #cfcfcf; }
+.summary-grid p { font-size: 0.95rem; color: var(--ink-soft); }
+
+/* ---------- back to top ---------- */
+
+.to-top { margin-top: 1.75rem; text-align: right; }
+.to-top a {
+  font-size: 0.64rem;
+  color: var(--ink-faint);
+  text-decoration: none;
+}
+.to-top a:hover { color: var(--blue); }
 
 /* ---------- footer ---------- */
 
 .site-footer {
-  background: var(--ink);
-  color: #fff;
-  border-top: 1px solid #333;
+  border-top: 1px solid var(--rule);
+  background: var(--paper-alt);
+  font-size: 0.66rem;
+  color: var(--ink-soft);
 }
 .site-footer .wrap {
   display: flex;
@@ -386,27 +684,109 @@ img { display: block; width: 100%; height: auto; }
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  padding-block: 1.5rem;
 }
-.site-footer nav { display: flex; gap: 1.5rem; }
-.site-footer a { text-decoration: none; }
-.site-footer a:hover { text-decoration: underline; }
-.site-footer .brand-small { font-family: var(--font-display); font-weight: 900; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+.site-footer a { color: inherit; text-decoration: none; }
+.site-footer a:hover { color: var(--blue); text-decoration: underline; }
+.site-footer .brand-small {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
 
 /* ---------- error state ---------- */
 
 .load-error {
-  max-width: 640px;
+  max-width: 40rem;
   margin: 4rem auto;
-  border: var(--border);
-  background: var(--card);
-  box-shadow: var(--shadow);
   padding: 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
+  background: var(--surface);
+  border: 1px solid var(--rule-firm);
+  border-left: 4px solid var(--blue);
+  font-size: 0.9rem;
 }
 .load-error strong { color: var(--blue); }
+.load-error code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--paper-alt);
+  padding: 0.15em 0.4em;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Contents column folds under the masthead. */
+@media (max-width: 940px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-block: 2rem 3rem;
+  }
+
+  .toc {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    border-left: 0;
+    border: 1px solid var(--rule-firm);
+    background: var(--surface);
+    padding: 0.5rem 0;
+  }
+  .toc__head { padding: 0.5rem 1rem; }
+  .toc__toggle { display: block; }
+  .toc__list { display: none; padding-bottom: 0.5rem; }
+  .toc.is-open .toc__list { display: block; }
+  .toc__list a { padding-left: 1rem; }
+  .toc__sublist a { padding-left: 2.25rem; }
+
+  .masthead .wrap { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .infobox { max-width: 26rem; }
+}
+
+@media (max-width: 720px) {
+  :root { --gutter: 1.125rem; }
+
+  .masthead { padding: 2.5rem 0 2.25rem; }
+  .masthead::before,
+  .masthead::after { opacity: 0.6; }
+
+  .featured { grid-template-columns: minmax(0, 1fr); padding: 1.125rem; }
+  .featured__media { max-width: 15rem; }
+
+  .era__head { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+/* Ball entry stacks: thumbnail above the text. */
+@media (max-width: 560px) {
+  .ball { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .ball__figure { max-width: 10rem; }
+  .specs { grid-template-columns: minmax(0, 1fr); }
+  .specs dt { border-bottom: 0; padding-bottom: 0; }
+  .specs dd { padding-top: 0.1rem; }
+  .summary-section { padding: 1.25rem; }
+}
+
+/* ============================================================
+   PRINT — a reference page should print cleanly
+   ============================================================ */
+
+@media print {
+  :root { --paper: #fff; --ink-soft: #333; }
+  .site-header,
+  .toc,
+  .to-top,
+  .skip-link,
+  .site-nav,
+  .permalink { display: none !important; }
+  .masthead::before,
+  .masthead::after { display: none; }
+  .layout { display: block; padding: 0; }
+  .ball { break-inside: avoid; }
+  .season { break-inside: avoid-page; }
+  a { color: inherit; text-decoration: none; }
+  .summary-section { background-image: none; }
+}
