@@ -120,7 +120,6 @@ a:hover { color: var(--accent-deep); text-decoration-thickness: 2px; }
 .eyebrow,
 .site-nav a,
 .toc__title,
-.infobox__title,
 .badge,
 .season__count,
 .featured__label,
@@ -240,33 +239,26 @@ h1, h2, h3, h4, .brand, .season__year {
 
 /* ---------- masthead ---------- */
 
+/* Height comes from the title and lede alone — nothing else in here
+   takes part in the layout. */
 .masthead {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--rule);
-  padding: 4.5rem 0 3.75rem;
+  padding: 2.75rem 0 2.5rem;
 }
 
-/* Pitch marking: the halfway line. Decorative only, hence a
-   pseudo-element. */
-.masthead::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: clamp(60px, 16vw, 240px);
-  border-left: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-  pointer-events: none;
-}
-/* Where the centre circle used to be: the star-panel ball, sitting on
-   the halfway line as a watermark. Faint on purpose — the infobox
-   overlaps it, so it reads as texture behind the page, not as a figure. */
+/* The star-panel ball as a watermark. Faint on purpose — it reads as
+   texture behind the page, not as a figure. */
 .masthead::after {
   content: "";
   position: absolute;
   top: 50%;
   right: clamp(60px, 16vw, 240px);
-  width: clamp(220px, 30vw, 380px);
+  /* Sized off the banner's own height, so it can never stretch the
+     block — it only ever fills what the text already asked for. */
+  height: 72%;
+  width: auto;
   aspect-ratio: 1;
   transform: translate(50%, -50%);
   background: url("img/ball-star-line.svg") center / contain no-repeat;
@@ -277,11 +269,11 @@ h1, h2, h3, h4, .brand, .season__year {
 .masthead .wrap {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  gap: 3.5rem;
-  align-items: start;
 }
+
+/* No cap: the ball is a watermark meant to sit behind the content, so
+   the title runs the full column instead of stopping short of it. */
+.masthead__text { max-width: 100%; }
 
 .eyebrow {
   display: flex;
@@ -298,9 +290,11 @@ h1, h2, h3, h4, .brand, .season__year {
   border-top: 1px solid currentColor;
 }
 
+/* Sized so "CHAMPIONS LEAGUE" holds one line across desktop widths
+   without the type having to shout to do it. */
 .masthead h1 {
-  font-size: clamp(2.5rem, 6.4vw, 5rem);
-  line-height: 0.9;
+  font-size: clamp(2rem, 4.6vw, 3.75rem);
+  line-height: 0.98;
   letter-spacing: var(--display-track-xl);
   text-transform: uppercase;
 }
@@ -314,47 +308,11 @@ h1, h2, h3, h4, .brand, .season__year {
 }
 
 .lede {
-  margin-top: 1.6rem;
-  max-width: 52ch;
-  font-size: 1.14rem;
-  line-height: 1.65;
+  margin-top: 1.4rem;
+  max-width: 72ch;
+  font-size: 1.0625rem;
+  line-height: 1.6;
   color: var(--ink-soft);
-}
-
-/* ---------- infobox (reference-style quick facts) ---------- */
-
-.infobox {
-  background: var(--surface);
-  border: 1px solid var(--rule);
-  border-top: 3px solid var(--sky);
-}
-
-.infobox__title {
-  font-size: 0.64rem;
-  padding: 0.8rem 1.1rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink);
-}
-
-.infobox dl {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  font-size: 0.85rem;
-}
-.infobox dt,
-.infobox dd {
-  padding: 0.6rem 1.1rem;
-  border-top: 1px solid var(--rule);
-}
-.infobox dt:first-of-type,
-.infobox dt:first-of-type + dd { border-top: 0; }
-.infobox dt { color: var(--ink-soft); }
-.infobox dd {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 700;
-  text-align: right;
-  white-space: nowrap;
 }
 
 /* ---------- layout: contents + article ---------- */
@@ -1037,18 +995,15 @@ body.is-locked {
   .toc__list a { padding-left: 1rem; }
   .toc__sublist a { padding-left: 2.25rem; }
 
-  .masthead .wrap { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
-  .infobox { max-width: 26rem; }
+  /* Below this width the lede reaches across the ball, so the
+     watermark drops back to stay texture rather than clutter. */
+  .masthead::after { opacity: 0.13; }
 }
 
 @media (max-width: 720px) {
   :root { --gutter: 1.125rem; }
 
-  .masthead { padding: 3rem 0 2.5rem; }
-  .masthead::before { opacity: 0.6; }
-  /* Single column here, so the ball sits straight behind the title —
-     pull it back further than the line. */
-  .masthead::after { opacity: 0.13; }
+  .masthead { padding: 2rem 0 1.75rem; }
 
   .featured { grid-template-columns: minmax(0, 1fr); padding: 1.25rem; }
   .featured__media { max-width: 15rem; }
@@ -1104,7 +1059,6 @@ body.is-locked {
   .viewer,
   .zoomable__badge,
   .permalink { display: none !important; }
-  .masthead::before,
   .masthead::after { display: none; }
   .layout { display: block; padding: 0; }
   .ball { break-inside: avoid; }

@@ -117,24 +117,6 @@ function buildOutline(data) {
   return entries;
 }
 
-// Figures shown in the quick-facts box, counted from the data
-// itself so they can never drift out of date.
-function collectStats(data) {
-  const eras = data.eras || [];
-  let balls = 0;
-  let seasons = 0;
-
-  eras.forEach((era) => {
-    if (era.featured_ball) balls += 1;
-    (era.years || []).forEach((yearEntry) => {
-      seasons += 1;
-      balls += (yearEntry.balls || []).length;
-    });
-  });
-
-  return { eras: eras.length, balls, seasons };
-}
-
 /* ---------- section renderers ---------- */
 
 function renderHeader(site) {
@@ -153,29 +135,7 @@ function renderHeader(site) {
   return header;
 }
 
-function renderInfobox(site, stats, lastUpdated) {
-  const rows = [];
-
-  if (site.partner_badge) {
-    rows.push([site.partner_badge.label, site.partner_badge.value]);
-  }
-  rows.push(["Balls documented", stats.balls]);
-  rows.push(["Seasons listed", stats.seasons]);
-  rows.push(["Periods covered", stats.eras]);
-  if (lastUpdated) rows.push(["Last updated", lastUpdated]);
-
-  const body = rows
-    .map(([label, value]) => `<dt>${esc(label)}</dt><dd>${esc(value)}</dd>`)
-    .join("");
-
-  return `
-    <aside class="infobox" aria-labelledby="quick-facts">
-      <h2 class="infobox__title" id="quick-facts">Quick facts</h2>
-      <dl>${body}</dl>
-    </aside>`;
-}
-
-function renderMasthead(site, stats, lastUpdated) {
+function renderMasthead(site) {
   const section = el("section", "masthead");
   section.innerHTML = `
     <div class="wrap">
@@ -186,7 +146,6 @@ function renderMasthead(site, stats, lastUpdated) {
         </h1>
         <p class="lede">${esc(site.intro)}</p>
       </div>
-      ${renderInfobox(site, stats, lastUpdated)}
     </div>`;
   return section;
 }
@@ -892,13 +851,13 @@ function setupTocToggle() {
 
 /* ---------- page assembly ---------- */
 
-function renderPage(data, lastUpdated) {
+function renderPage(data) {
   const app = document.getElementById("app");
   const site = data.site || {};
   app.innerHTML = "";
 
   app.appendChild(renderHeader(site));
-  app.appendChild(renderMasthead(site, collectStats(data), lastUpdated));
+  app.appendChild(renderMasthead(site));
 
   const layout = el("div", "layout wrap");
   layout.appendChild(renderToc(buildOutline(data)));
@@ -935,27 +894,13 @@ function renderError(err) {
     </div>`;
 }
 
-// Reference pages state when they were last revised; the server
-// already tells us, so no need for a field in data.yaml.
-function readLastModified(res) {
-  const header = res.headers.get("last-modified");
-  if (!header) return "";
-  const date = new Date(header);
-  if (Number.isNaN(date.getTime())) return "";
-  return new Intl.DateTimeFormat("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  }).format(date);
-}
-
 async function init() {
   try {
     const res = await fetch(DATA_URL, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status} while fetching ${DATA_URL}`);
     const text = await res.text();
     const data = jsyaml.load(text);
-    renderPage(data, readLastModified(res));
+    renderPage(data);
   } catch (err) {
     console.error(err);
     renderError(err);
