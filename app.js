@@ -602,6 +602,55 @@ function buildViewer() {
     { passive: false }
   );
 
+  /* --- iOS: keep the pinch off the page ---
+
+     touch-action stops the browser panning and scrolling, but it has no
+     say over Safari's own page zoom: that runs on the non-standard
+     gesture events, which ignore it entirely. So a pinch that begins on
+     the title band, the toolbar, or the empty space around the picture
+     zooms the whole document instead of the ball — and since the chrome
+     is anchored to the layout viewport, the close cross is pushed off
+     screen and the reader is stuck inside the viewer.
+
+     Bound to the document rather than to the viewer so the gesture is
+     caught wherever it starts, and gated on the viewer being open so
+     pinch-zooming the page itself keeps working the rest of the time.
+     Blocking touchmove would have been the other route, but on iOS the
+     pointer events are generated from the touch events, so cancelling
+     those would take the viewer's own pinch down with them. */
+
+  ["gesturestart", "gesturechange", "gestureend"].forEach((type) =>
+    document.addEventListener(
+      type,
+      (event) => {
+        if (!root.hidden) event.preventDefault();
+      },
+      { passive: false }
+    )
+  );
+
+  /* And if the page was already zoomed before the viewer opened, there
+     is nothing to prevent — the damage is done. Follow the visible
+     region instead, so the way out is always within reach. Identity
+     transform at scale 1, so this costs nothing in the normal case. */
+
+  const vv = window.visualViewport;
+
+  function pinClose() {
+    if (!vv) return;
+    const dx = vv.offsetLeft + vv.width - document.documentElement.clientWidth;
+    closeButton.style.transform =
+      `translate(${dx}px, ${vv.offsetTop}px) scale(${1 / vv.scale})`;
+  }
+
+  if (vv) {
+    const follow = () => {
+      if (!root.hidden) pinClose();
+    };
+    vv.addEventListener("resize", follow);
+    vv.addEventListener("scroll", follow);
+  }
+
   /* --- pointers: drag to pan, two fingers to pinch --- */
 
   stage.addEventListener("pointerdown", (event) => {
@@ -806,6 +855,7 @@ function buildViewer() {
     root.hidden = false;
     lockScroll();
     apply(false);
+    pinClose();
     closeButton.focus();
   }
 
@@ -816,6 +866,7 @@ function buildViewer() {
     pinch = null;
     drag = null;
     unlockScroll();
+    closeButton.style.transform = "";
     if (opener) opener.focus();
     opener = null;
     img.removeAttribute("src");

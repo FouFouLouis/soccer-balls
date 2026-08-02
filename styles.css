@@ -776,6 +776,9 @@ h1, h2, h3, h4, .brand, .season__year {
   flex-direction: column;
   background: rgb(6 10 40 / 95%);
   overscroll-behavior: contain;
+  /* On the root, not just the stage: a drag starting on the title band
+     or the toolbar was still the browser's to interpret. */
+  touch-action: none;
 }
 /* display:flex would otherwise win over the [hidden] UA rule. */
 .viewer[hidden] { display: none; }
@@ -995,6 +998,10 @@ h1, h2, h3, h4, .brand, .season__year {
   border: 1px solid rgb(255 255 255 / 18%);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  /* app.js may re-anchor this to the visual viewport on a zoomed page;
+     pinning the origin to the corner it already sits in keeps the
+     counter-scale from walking it away from that corner. */
+  transform-origin: 100% 0;
 }
 .viewer__close:hover {
   background: rgb(255 255 255 / 20%);
