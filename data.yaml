@@ -89,17 +89,7 @@ eras:
               
       - year: 2025
         balls:
-          - name: "FINALE 25 LONDON"
-            stage: "Final Edition"
-            highlight: true
-            description: >
-              Inspired by Wembley, featuring vibrant fan graphics and
-              high-frequency welding.
-            image: "https://placehold.co/600x600/3a2f28/eeeeee?text=Finale+24+London"
-            specs:
-              - { label: "Venue", value: "Wembley" }
-              - { label: "Tech", value: "CTR-CORE" }
-          - name: "FINALE 23/24 GROUP"
+          - name: "FINALE 24/25 GROUP"
             stage: "Group Stage"
             description: >
               The standard seasonal edition with deep blue and white
@@ -117,6 +107,16 @@ eras:
             specs:
               - { label: "Type", value: "BUTYL" }
               - { label: "Seam", value: "STITCHED" }
+          - name: "FINALE 25 LONDON"
+            stage: "Final Edition"
+            highlight: true
+            description: >
+              Inspired by Wembley, featuring vibrant fan graphics and
+              high-frequency welding.
+            image: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/9668e7240f094da6bb4f226f252a0a8f_9366/Ballon_UCL_Pro_24-25_Knockout_Phase_Blanc_JH1279_HM1.jpg"
+            specs:
+              - { label: "Venue", value: "Wembley" }
+              - { label: "Tech", value: "CTR-CORE" }
 
       - year: 2024
         balls:
