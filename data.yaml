@@ -31,11 +31,9 @@ site:
     label: "CURRENT PARTNER"
     value: "NIKE (INCOMING)"
   nav:
-    - "Timeline"
+    - "Champions League"
     - "Archive"
-    - "Shop"
     - "Finals"
-    - "Technology"
 
 eras:
   # ------------------------------------------------------------
