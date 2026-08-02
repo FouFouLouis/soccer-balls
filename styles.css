@@ -889,7 +889,9 @@ h1, h2, h3, h4, .brand, .season__year {
 .viewer__head {
   display: flex;
   justify-content: center;
-  padding: 0.85rem 1rem;
+  /* Symmetric inline padding keeps the edition optically centred while
+     clearing the close cross that floats over the right-hand end. */
+  padding: 0.85rem 3.5rem;
   background: rgb(20 24 29 / 96%);
   border-bottom: 1px solid rgb(255 255 255 / 12%);
 }
@@ -931,8 +933,28 @@ h1, h2, h3, h4, .brand, .season__year {
   -webkit-tap-highlight-color: transparent;
 }
 .viewer__btn:hover { background: rgb(255 255 255 / 16%); }
-.viewer__btn--strong { background: var(--accent); border-color: var(--accent); }
-.viewer__btn--strong:hover { background: var(--accent-deep); }
+
+/* Zoom is the reason the viewer exists, so − / level / + read as one
+   solid instrument rather than three faint buttons among others. */
+.viewer__zoom {
+  display: flex;
+  align-items: center;
+  background: rgb(255 255 255 / 15%);
+  border: 1px solid rgb(255 255 255 / 38%);
+}
+.viewer__zoom .viewer__btn {
+  border: 0;
+  background: transparent;
+}
+.viewer__zoom .viewer__btn:hover { background: rgb(255 255 255 / 26%); }
+
+.viewer__btn--zoom {
+  padding-inline: 1rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
 
 /* The zoom range depends on the resolution of the photo on screen,
    so + and − switch off at the ends rather than going quietly dead. */
@@ -941,14 +963,50 @@ h1, h2, h3, h4, .brand, .season__year {
   cursor: not-allowed;
 }
 .viewer__btn[disabled]:hover { background: rgb(255 255 255 / 8%); }
+/* Inside the group a lit hover square on a dead button reads as live. */
+.viewer__zoom .viewer__btn[disabled]:hover { background: transparent; }
 
 .viewer__level {
-  min-width: 5.5rem;
+  min-width: 5rem;
+  padding-block: 0.55rem;
+  border-inline: 1px solid rgb(255 255 255 / 24%);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-align: center;
   font-variant-numeric: tabular-nums;
-  color: rgb(255 255 255 / 72%);
+  color: #fff;
+}
+
+/* ---------- close cross ---------- */
+
+.viewer__close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;    /* 44px: the smallest comfortable tap target */
+  height: 2.75rem;
+  padding: 0;
+  color: #fff;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 18%);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.viewer__close:hover {
+  background: rgb(255 255 255 / 20%);
+  border-color: rgb(255 255 255 / 45%);
+}
+.viewer__close svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 /* Paired with the position:fixed lock in app.js. */
@@ -1035,6 +1093,10 @@ body.is-locked {
   }
   .viewer__btn { flex: 1; padding-inline: 0.4rem; }
   .viewer__level { flex: 0 0 auto; min-width: 4.5rem; }
+  /* The group has to grab its own share of the row, and it takes the
+     larger one: zooming is why the viewer is open, resetting is not. */
+  .viewer__zoom { flex: 2; }
+  .viewer__btn--zoom { padding-inline: 0.4rem; font-size: 1.25rem; }
 }
 
 /* A phone in landscape has very little height to give the stage. */

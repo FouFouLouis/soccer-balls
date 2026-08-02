@@ -392,7 +392,16 @@ function buildViewer() {
   root.setAttribute("role", "dialog");
   root.setAttribute("aria-modal", "true");
   root.setAttribute("aria-label", "Image viewer");
+  /* The close cross hangs off the root, not off the head band: the head
+     is hidden whenever a ball has no edition to show, and the way out
+     must not disappear with it. */
   root.innerHTML = `
+    <button class="viewer__close" type="button" data-act="close"
+            aria-label="Close image viewer">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M6 6 18 18M18 6 6 18" />
+      </svg>
+    </button>
     <div class="viewer__head">
       <p class="viewer__edition"></p>
     </div>
@@ -403,14 +412,14 @@ function buildViewer() {
     <div class="viewer__bar">
       <p class="viewer__hint">Click, scroll or pinch to zoom · drag to move</p>
       <div class="viewer__tools">
-        <button class="viewer__btn" type="button" data-act="out"
-                aria-label="Zoom out">&minus;</button>
-        <span class="viewer__level" aria-hidden="true">100%</span>
-        <button class="viewer__btn" type="button" data-act="in"
-                aria-label="Zoom in">+</button>
+        <div class="viewer__zoom">
+          <button class="viewer__btn viewer__btn--zoom" type="button"
+                  data-act="out" aria-label="Zoom out">&minus;</button>
+          <span class="viewer__level" aria-hidden="true">100%</span>
+          <button class="viewer__btn viewer__btn--zoom" type="button"
+                  data-act="in" aria-label="Zoom in">+</button>
+        </div>
         <button class="viewer__btn" type="button" data-act="reset">Reset</button>
-        <button class="viewer__btn viewer__btn--strong" type="button"
-                data-act="close">Close</button>
       </div>
     </div>`;
   document.body.appendChild(root);
